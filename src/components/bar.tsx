@@ -7,6 +7,8 @@ import Slide from "@mui/material/Slide";
 import {IconButton} from "@mui/material";
 import AlertDialog from "./dialog";
 import TabPanel from './tab'
+import SingUp from "../auth/singup";
+import SingIn from "../auth/singIn";
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
@@ -22,35 +24,31 @@ function HideOnScroll(props: Props) {
     target: window ? window() : undefined,
   });
 
-  return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      {children}
-    </Slide>
-  );
+    return (
+        <Slide appear={false} direction="down" in={!trigger}>
+            {children}
+        </Slide>
+    );
 }
+
 export function Bar(props: any) {
     const MyButton = props.Button
     return (<HideOnScroll {...props}>
         <AppBar>
             <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MyButton />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
+               <MyButton/>
+                <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                    News
+                </Typography>
                 <AlertDialog>
-                    <div>
-                        <TabPanel/>
+                    <div style={{
+                        height:'400px',
+                        width:"300px"
+                    }}>
+                        <TabPanel items={[{name: 'sign in', content: <SingIn/>}, {name: 'sign up', content: <SingUp/>}]}/>
                     </div>
                 </AlertDialog>
-        </Toolbar>
+            </Toolbar>
         </AppBar>
-    </HideOnScroll>)
+    </HideOnScroll>);
 }
