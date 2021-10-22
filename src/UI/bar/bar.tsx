@@ -4,11 +4,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Slide from "@mui/material/Slide";
-import {IconButton} from "@mui/material";
-import AlertDialog from "./dialog";
-import TabPanel from './tab'
-import SingUp from "../auth/singup";
-import SingIn from "../auth/singIn";
+import AlertDialog from "../dialog";
+import TabPanel from '../tab'
+import SingUp from "../../components/auth/singup";
+import SingIn from "../../components/auth/singIn";
+
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
@@ -36,16 +36,18 @@ export function Bar(props: any) {
     return (<HideOnScroll {...props}>
         <AppBar>
             <Toolbar>
-               <MyButton/>
+                <MyButton/>
+
                 <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                    News
+                    ِAUTODOX
                 </Typography>
                 <AlertDialog>
                     <div style={{
-                        height:'400px',
-                        width:"300px"
+                        height: '400px',
+                        width: "300px"
                     }}>
-                        <TabPanel items={[{name: 'sign in', content: <SingIn/>}, {name: 'sign up', content: <SingUp/>}]}/>
+                        <TabPanel
+                            items={[{name: 'sign in', content: <SingIn/>}, {name: 'sign up', content: <SingUp/>}]}/>
                     </div>
                 </AlertDialog>
             </Toolbar>

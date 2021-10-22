@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import RecipeReviewCard from "./card";
+import RecipeReviewCard from "../UI/card";
 import React from "react";
 import {Route, Switch} from "react-router-dom";
 // import {experimentalStyled as styled} from '@mui/material/styles';

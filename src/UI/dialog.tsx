@@ -19,8 +19,8 @@ export default function AlertDialog(props:any) {
 
   return (
     <div>
-      <Button onClick={handleClickOpen}>
-        Open alert dialog
+      <Button color='warning' variant="contained" onClick={handleClickOpen}>
+        sign in/up
       </Button>
       <Dialog
         open={open}

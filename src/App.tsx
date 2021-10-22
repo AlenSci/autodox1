@@ -1,17 +1,27 @@
 import React from 'react';
 import './App.css';
-import PersistentDrawerLeft from './main/dashboard'
+import PersistentDrawerLeft from './UI/main/dashboard'
 import {Posts} from "./components/posts";
 import {BrowserRouter as Router} from "react-router-dom";
-import {DrawerContent} from "./components/DrawerContent";
-import {Bar} from "./components/bar";
-import MyCom from './components/mycom'
+import {DrawerContent} from "./UI/bar/DrawerContent";
+import {Bar} from "./UI/bar/bar";
 import Stack from '@mui/material/Stack';
-import {ApolloClient, ApolloLink, ApolloProvider, createHttpLink, InMemoryCache,} from '@apollo/client';
+import {ApolloClient, ApolloLink, ApolloProvider, createHttpLink, InMemoryCache, split,} from '@apollo/client';
 import {setContext} from '@apollo/client/link/context';
-import {useSnackbar} from 'notistack';
+import {useSnackbar, VariantType} from 'notistack';
 import {onError} from "@apollo/client/link/error";
-import {Button} from "@mui/material";
+import LatestComment from './components/lastcomment'
+
+
+import { WebSocketLink } from '@apollo/client/link/ws';
+import {getMainDefinition} from "@apollo/client/utilities";
+
+const wsLink:any = new WebSocketLink({
+  uri: 'ws://127.0.0.1:8000/',
+  options: {
+    reconnect: true
+  }
+});
 
 
 function App() {
@@ -33,28 +43,29 @@ function App() {
     });
 
     const errorLink = onError(({graphQLErrors, networkError}) => {
-        const variant = 'error'
-        if (graphQLErrors){
-            enqueueSnackbar(<div style={{display:'flex'}}>
-
-                <div
-            >{JSON.stringify(graphQLErrors[0]['message'])}</div>
-                <Button
-            onClick={()=>closeSnackbar()}
-            >x</Button>
-
-            </div>, {variant});
+        const variant: VariantType = "error"
+        if (graphQLErrors) {
+            enqueueSnackbar(graphQLErrors[0]['message'], {variant});
         }
-        // console.log({networkError: networkError})
-        // console.log({graphQLErrors:graphQLErrors})
     });
 
+
+    const splitLink = split(
+        ({query}: any) => {
+            const definition = getMainDefinition(query);
+            return (
+                definition.kind === 'OperationDefinition' &&
+                definition.operation === 'subscription'
+            );
+        },
+        wsLink,
+        ApolloLink.from([errorLink, httpLink, authLink]),
+    );
 
     const client = new ApolloClient({
-        link: ApolloLink.from([errorLink,httpLink, authLink]),
+        link: splitLink,
         cache: new InMemoryCache()
     });
-
 
     return (
         <ApolloProvider client={client}>
@@ -62,8 +73,9 @@ function App() {
                 <Router>
                     <PersistentDrawerLeft Bar={Bar} DrawerContent={DrawerContent} Component={Posts}/>
                 </Router>
-                <MyCom/>
+
             </Stack>
+            <LatestComment/>
         </ApolloProvider>
     );
 }
