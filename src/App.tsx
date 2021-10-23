@@ -11,29 +11,32 @@ import {setContext} from '@apollo/client/link/context';
 import {useSnackbar, VariantType} from 'notistack';
 import {onError} from "@apollo/client/link/error";
 import LatestComment from './components/lastcomment'
-
-
-import { WebSocketLink } from '@apollo/client/link/ws';
+import {WebSocketLink} from '@apollo/client/link/ws';
 import {getMainDefinition} from "@apollo/client/utilities";
+
+
+import Chat from "./components/chat";
+const token =  `Bearer ${localStorage.getItem('token') || ''}`
 
 const wsLink:any = new WebSocketLink({
   uri: 'ws://127.0.0.1:8000/',
-  options: {
-    reconnect: true
-  }
+    options: {
+        reconnect: true,
+        connectionParams: {
+            authToken: token
+        },
+
+    }
 });
 
 
 function App() {
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
     const authLink = setContext((_, {headers}) => {
-        // get the authentication token from local storage if it exists
-        const token = localStorage.getItem('token');
-        // return the headers to the context so httpLink can read them
         return {
             headers: {
                 ...headers,
-                authorization: token ? `Bearer ${token}` : "",
+                authorization: token
             }
         }
     });
@@ -66,16 +69,15 @@ function App() {
         link: splitLink,
         cache: new InMemoryCache()
     });
-
     return (
         <ApolloProvider client={client}>
             <Stack spacing={2} sx={{width: '100%'}}>
                 <Router>
                     <PersistentDrawerLeft Bar={Bar} DrawerContent={DrawerContent} Component={Posts}/>
                 </Router>
-
             </Stack>
             <LatestComment/>
+            <Chat/>
         </ApolloProvider>
     );
 }

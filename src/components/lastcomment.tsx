@@ -1,6 +1,4 @@
-import {useSubscription} from "@apollo/client";
 import {gql} from "apollo-boost";
-import {CircularProgress} from "@mui/material";
 import React from "react";
 import SubscriptionHook from "../hooks/subscription_hook";
 
@@ -18,11 +16,5 @@ function LatestComment() {
         {x(<h1>{data.counter}</h1>)}
       </div>
   )
-  // const { data, loading } = useSubscription(COMMENTS_SUBSCRIPTION)
-  // if (loading){
-  //   return <CircularProgress />
-  // } else {
-  //   return ()
-  // }
 }
 export default LatestComment;
