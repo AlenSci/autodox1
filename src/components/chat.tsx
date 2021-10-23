@@ -71,6 +71,7 @@ function Chat() {
                                 activate({
                                     send: e.target.value
                                 });
+                                e.target.value = ''
                             }
                         }
                         }
