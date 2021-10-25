@@ -16,10 +16,11 @@ import {getMainDefinition} from "@apollo/client/utilities";
 
 
 import Chat from "./components/chat";
-const token =  `Bearer ${localStorage.getItem('token') || ''}`
-
+const tok = localStorage.getItem('token' )
+const token =  `Bearer ${tok == 'undefined' ? '':tok}`
+console.log({'token ......':token})
 const wsLink:any = new WebSocketLink({
-  uri: 'ws://127.0.0.1:8000/',
+  uri: `ws://127.0.0.1:8000/?token=${token}`,
     options: {
         reconnect: true,
         connectionParams: {
@@ -28,7 +29,6 @@ const wsLink:any = new WebSocketLink({
 
     }
 });
-
 
 function App() {
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
@@ -62,9 +62,8 @@ function App() {
             );
         },
         wsLink,
-        ApolloLink.from([errorLink, httpLink, authLink]),
+        ApolloLink.from([authLink, errorLink, httpLink]),
     );
-
     const client = new ApolloClient({
         link: splitLink,
         cache: new InMemoryCache()

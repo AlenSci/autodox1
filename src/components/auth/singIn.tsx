@@ -6,13 +6,20 @@ import MutationHook from "../../hooks/mutation_hook";
 import {SIGN_IN} from "../../queries/auth";
 
 export default function SingIn() {
-    const [x,y,data] = MutationHook(SIGN_IN)
-    const onclick = (e:any) => {
-        e.preventDefault()
-        console.log(e.target['password'].value, e.target['username'].value)
+    const [x, y, data] = MutationHook(SIGN_IN)
+    const onclick = (e: any) => {
         x({password: e.target['password'].value, username: e.target['username'].value})
+        e.preventDefault()
     };
-    console.log(data)
+    if (data.signin){
+        localStorage.setItem('token', data.signin)
+        window.location.reload();
+    } else {
+        console.log('error')
+    }
+
+
+
     return (
         <div
             style={{
@@ -58,7 +65,6 @@ export default function SingIn() {
             </DialogContent>
         </div>
     );
-
 
 
 };

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
+import OAuth2 from "../Oauth2";
 
 export default function AlertDialog(props:any) {
   const [open, setOpen] = React.useState(false);
@@ -14,10 +15,12 @@ export default function AlertDialog(props:any) {
   };
 
   return (
-    <div>
+    <div style={{display:'flex'}}>
       <Button color='warning' variant="contained" onClick={handleClickOpen}>
         sign in/up
       </Button>
+
+
       <Dialog
         open={open}
         onClose={handleClose}

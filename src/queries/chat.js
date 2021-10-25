@@ -7,5 +7,16 @@ const SEND = gql(`
 
 `)
 
+
+const MESSAGES_SUBSCRIPTIONS = gql(`
+subscription chat{
+  chat{
+    sender
+    message
+  }
+}
+`);
+
+
 export default SEND
-// export {SIGN_IN}
+export {MESSAGES_SUBSCRIPTIONS}

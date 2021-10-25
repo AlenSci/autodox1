@@ -8,6 +8,8 @@ import AlertDialog from "../dialog";
 import TabPanel from '../tab'
 import SingUp from "../../components/auth/singup";
 import SingIn from "../../components/auth/singIn";
+import OAuth2 from "../../Oauth2";
+import ControlPanel from "../controlpanel";
 
 interface Props {
   /**
@@ -32,24 +34,31 @@ function HideOnScroll(props: Props) {
 }
 
 export function Bar(props: any) {
+    const token: string = localStorage.getItem('token') || '';
     const MyButton = props.Button
+    console.log(token.length >= 10)
+
     return (<HideOnScroll {...props}>
-        <AppBar>
+        <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} style={{padding: 0}}>
             <Toolbar>
                 <MyButton/>
-
                 <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                     ِAUTODOX
                 </Typography>
-                <AlertDialog>
-                    <div style={{
-                        height: '400px',
-                        width: "300px"
-                    }}>
-                        <TabPanel
-                            items={[{name: 'sign in', content: <SingIn/>}, {name: 'sign up', content: <SingUp/>}]}/>
-                    </div>
-                </AlertDialog>
+
+                {token.length <= 9 ? <div style={{display:'flex'}}>
+                    <AlertDialog>
+                        <div style={{
+                            height: '400px',
+                            width: "350px"
+                        }}>
+                            <TabPanel
+                                items={[{name: 'sign in', content: <SingIn/>}, {name: 'sign up', content: <SingUp/>}]}/>
+                        </div>
+                    </AlertDialog>
+                    <OAuth2/>
+                </div>: <ControlPanel/>}
+
             </Toolbar>
         </AppBar>
     </HideOnScroll>);

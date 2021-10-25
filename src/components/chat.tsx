@@ -1,38 +1,22 @@
 import {gql} from "apollo-boost";
-import React, {useCallback, useMemo} from "react";
+import React, {useMemo} from "react";
 import SubscriptionHook from "../hooks/subscription_hook";
 import DraggableDialog from "../UI/dragabledialog";
 import AlignItemsList from "../UI/itemslist";
 import DialogActions from "@mui/material/DialogActions";
 import {TextField} from "@mui/material";
 import MutationHook from "../hooks/mutation_hook";
-import SEND from '../queries/chat'
-import { ApolloConsumer } from '@apollo/client';
+import SEND, {MESSAGES_SUBSCRIPTIONS} from '../queries/chat'
 
-const COMMENTS_SUBSCRIPTION = gql(`
-subscription chat{
-  chat{
-    sender
-    message
-  }
-}
-`);
-
-const USERS = gql(`
-query users{
-  users{
-    id
-    username
-  }
-}
-`);
 
 function Chat() {
     const [activate, is_loading, Mdata] = MutationHook(SEND)
-    const [x, data] = SubscriptionHook(COMMENTS_SUBSCRIPTION, {id: 0});
+    const [x, data] = SubscriptionHook(MESSAGES_SUBSCRIPTIONS, {id: 0});
     // if (typeof data.chat == 'list'){
     //     localStorage.setItem('messages', JSON.stringify(data))
     // }
+
+
 
     const chats = useMemo(() => {
             if (typeof data == 'string') {
