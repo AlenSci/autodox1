@@ -12,5 +12,10 @@ signin(username: $username,password: $password)
 }
 `)
 
+const GOOGLE_AUTH = gql(`
+mutation google_auth($token:String!){
+  google_auth(token:$token)
+}
+`)
 export default SIGN_UP
-export {SIGN_IN}
+export {SIGN_IN, GOOGLE_AUTH}

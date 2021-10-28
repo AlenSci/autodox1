@@ -12,12 +12,12 @@ import {
 } from "@mui/material";
 
 export default function MessageItem(props: any) {
-
+    const color = localStorage.getItem('currentuser') == props.title ? 'lightblue' : 'gray';
     return (
         <Slide direction="up" in={true}>
             <ListItem
                 style={{
-                    background: 'lightblue',
+                    background: color,
                     borderRadius: '40px',
                     marginBottom: '5px',
                     paddingTop: '0',

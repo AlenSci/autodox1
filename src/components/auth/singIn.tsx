@@ -9,6 +9,7 @@ export default function SingIn() {
     const [x, y, data] = MutationHook(SIGN_IN)
     const onclick = (e: any) => {
         x({password: e.target['password'].value, username: e.target['username'].value})
+        localStorage.setItem('currentuser', e.target['username'].value)
         e.preventDefault()
     };
     if (data.signin){

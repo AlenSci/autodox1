@@ -1,22 +1,17 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
+import {alpha, styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import LogoutIcon from "@mui/icons-material/Logout";
-import {Tooltip} from "@mui/material";
+import {Button} from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,6 +54,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function ControlPanel() {
+    console.log({"localStorage.getItem('image')":localStorage.getItem('image')})
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -100,15 +96,19 @@ export default function ControlPanel() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+            <MenuItem onClick={handleProfileMenuOpen}>
+
+                <p>Profile</p>
+            </MenuItem>
+
             <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-            <MenuItem style={{color:'tomato'}} onClick={() => {
+            <MenuItem style={{color: 'tomato'}} onClick={() => {
                 handleMenuClose()
                 window.localStorage.clear()
                 window.location.reload();
             }
             }>
-                <LogoutIcon />
+                <LogoutIcon/>
 
                 Sign out
             </MenuItem>
@@ -153,15 +153,7 @@ export default function ControlPanel() {
         <p>Notifications</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
+          <Avatar src={localStorage.getItem('image') || ''}/>
         <p>Profile</p>
       </MenuItem>
     </Menu>
@@ -185,17 +177,11 @@ export default function ControlPanel() {
                         <NotificationsIcon/>
                     </Badge>
                 </IconButton>
-                <IconButton
-                    size="large"
-                    edge="end"
-                    aria-label="account of current user"
-                    aria-controls={menuId}
-                    aria-haspopup="true"
+                <Button
                     onClick={handleProfileMenuOpen}
-                    color="inherit"
                 >
-                    <AccountCircle/>
-                </IconButton>
+                    <Avatar src={localStorage.getItem('image') || ''}/>
+                </Button>
             </Box>
             <Box sx={{display: {xs: 'flex', md: 'none'}}}>
                 <IconButton
