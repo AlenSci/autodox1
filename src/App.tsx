@@ -17,7 +17,7 @@ import {getMainDefinition} from "@apollo/client/utilities";
 
 import Chat from "./components/chat";
 const tok = localStorage.getItem('token' )
-const token =  `Bearer ${tok == 'undefined' ? '':tok}`
+const token =  `${tok == 'undefined' ? '':tok}`
 console.log({'token ......':token})
 const wsLink:any = new WebSocketLink({
   uri: `ws://127.0.0.1:8000/?token=${token}`,
