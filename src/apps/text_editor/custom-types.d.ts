@@ -1,6 +1,14 @@
-import {BaseEditor, Descendant,} from 'slate'
-import {ReactEditor} from 'slate-react'
-import {HistoryEditor} from 'slate-history'
+import {
+  Text,
+  createEditor,
+  Node,
+  Element,
+  Editor,
+  Descendant,
+  BaseEditor,
+} from 'slate'
+import { ReactEditor } from 'slate-react'
+import { HistoryEditor } from 'slate-history'
 
 export type BlockQuoteElement = { type: 'block-quote'; children: Descendant[] }
 
@@ -32,6 +40,8 @@ export type ImageElement = {
 
 export type LinkElement = { type: 'link'; url: string; children: Descendant[] }
 
+export type ButtonElement = { type: 'button'; children: Descendant[] }
+
 export type ListItemElement = { type: 'list-item'; children: Descendant[] }
 
 export type MentionElement = {
@@ -42,11 +52,11 @@ export type MentionElement = {
 
 export type ParagraphElement = { type: 'paragraph'; children: Descendant[] }
 
-// export type TableElement = { type: 'table'; children: TableRow[] }
+export type TableElement = { type: 'table'; children: TableRow[] }
 
 export type TableCellElement = { type: 'table-cell'; children: CustomText[] }
 
-// export type TableRowElement = { type: 'table-row'; children: TableCell[] }
+export type TableRowElement = { type: 'table-row'; children: TableCell[] }
 
 export type TitleElement = { type: 'title'; children: Descendant[] }
 
@@ -61,11 +71,12 @@ type CustomElement =
   | HeadingTwoElement
   | ImageElement
   | LinkElement
+  | ButtonElement
   | ListItemElement
   | MentionElement
   | ParagraphElement
-  // | TableElement
-  // | TableRowElement
+  | TableElement
+  | TableRowElement
   | TableCellElement
   | TitleElement
   | VideoElement

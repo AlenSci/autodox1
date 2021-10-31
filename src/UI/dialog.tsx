@@ -15,7 +15,7 @@ export default function AlertDialog(props:any) {
   };
 
   return (
-    <div style={{display:'flex'}}>
+    <div style={{display:'flex', margin:0}}>
       <Button color='warning' variant="contained" onClick={handleClickOpen}>
         sign in/up
       </Button>

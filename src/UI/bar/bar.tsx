@@ -38,11 +38,11 @@ export function Bar(props: any) {
     const MyButton = props.Button
     console.log(token.length >= 10)
 
-    return (<HideOnScroll {...props}>
-        <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} style={{padding: 0}}>
-            <Toolbar>
-                <MyButton/>
-                <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+    return (<HideOnScroll  {...props}>
+        <AppBar    position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} style={{padding: 0}}>
+            <Toolbar style={{padding:0, margin:0}} >
+                    <MyButton/>
+                <Typography  variant="h6" component="div" sx={{flexGrow: 1}}>
                     ِAUTODOX
                 </Typography>
 

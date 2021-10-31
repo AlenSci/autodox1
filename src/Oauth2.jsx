@@ -30,7 +30,12 @@ export default function OAuth2() {
 
     return (<div>
         {y(<Tooltip title="Sign in" followCursor>
-            <IconButton style={{color: 'white'}} color='success' onClick={signIn}><GoogleIcon/></IconButton>
+            <IconButton onClick={signIn}><GoogleIcon
+                style={{
+                    // background: 'conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat',
+                    color: 'white',
+                }}
+            /></IconButton>
         </Tooltip>)}
     </div>);
 };

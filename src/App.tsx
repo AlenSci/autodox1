@@ -16,6 +16,7 @@ import {getMainDefinition} from "@apollo/client/utilities";
 
 
 import Chat from "./components/chat";
+import CheckListsExample from "./apps/text_editor/text_editor";
 const tok = localStorage.getItem('token' )
 const token =  `${tok == 'undefined' ? '':tok}`
 console.log({'token ......':token})
@@ -77,6 +78,7 @@ function App() {
             </Stack>
             <LatestComment/>
             <Chat/>
+            <CheckListsExample/>
         </ApolloProvider>
     );
 }
