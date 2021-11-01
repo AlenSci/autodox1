@@ -53,7 +53,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function ControlPanel() {
+export default function ControlPanel(props:any) {
     console.log({"localStorage.getItem('image')":localStorage.getItem('image')})
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -96,22 +96,21 @@ export default function ControlPanel() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleProfileMenuOpen}>
-
-                <p>Profile</p>
-            </MenuItem>
-
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-            <MenuItem style={{color: 'tomato'}} onClick={() => {
-                handleMenuClose()
-                window.localStorage.clear()
-                window.location.reload();
-            }
-            }>
-                <LogoutIcon/>
-
-                Sign out
-            </MenuItem>
+            {props.menu.map((i:any, index:number) =>{
+                return (<MenuItem style={i.style}
+                        onClick={
+                            ()=>{
+                                if (i.action){
+                                    i.action()
+                                }
+                                handleMenuClose()
+                                // handleProfileMenuOpen()
+                            }
+                        }
+                    >
+                    {i.e}
+                    </MenuItem>)
+            })}
         </Menu>
     );
 
@@ -195,7 +194,6 @@ export default function ControlPanel() {
                     <MoreIcon/>
                 </IconButton>
             </Box>
-
             {renderMobileMenu}
             {renderMenu}
 

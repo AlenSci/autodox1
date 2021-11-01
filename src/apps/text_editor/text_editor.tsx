@@ -3,20 +3,52 @@ import {Editable, Slate, withReact,} from 'slate-react'
 import {createEditor, Descendant, Editor, Element as SlateElement, Point, Range, Transforms,} from 'slate'
 import {withHistory} from 'slate-history'
 import {withMyPlugin} from "./plugins/other";
-import initialValue from "./initialValue";
-import {withHtml} from "./paste-html";
-import Element from './element'
+import initialValue from "./components/initialValue";
+import {withHtml} from "./components/paste-html";
+import Element from './components/element'
+import {HoveringToolbar, Leaf, toggleFormat} from "./components/hovering-toolbar";
+import useMention from "./hooks/use_mentions";
+import {CHARACTERS, insertMention, withMentions} from "./inserts/mention";
+import {CHARACTERS_E, insertElement} from "./inserts/elements";
 
 const CheckListsExample = () => {
     const [value, setValue] = useState<Descendant[]>(initialValue)
     const renderElement = useCallback(props => <Element {...props} />, [])
     const editor = useMemo(
-        () => withHtml(withChecklists(withHistory(withReact(withMyPlugin(createEditor()))))),
+        () => withMentions(withHtml(withChecklists(withHistory(withReact(withMyPlugin(createEditor())))))),
         []
     )
+
+    const [onChange, onKeyDown, Menu]: any = useMention(editor, /^@(\w+)$/, CHARACTERS, insertMention)
+    const [onChange_E, onKeyDown_E, Menu_E]: any = useMention(editor, /^\/(\w+)$/, CHARACTERS_E, insertElement)
+
     return (
-        <Slate editor={editor} value={value} onChange={value => setValue(value)}>
+        <Slate editor={editor} value={value} onChange={value => {
+            setValue(value)
+            onChange()
+            onChange_E()
+        }}>
+            <HoveringToolbar/>
+            <Menu_E/>
+            <Menu/>
             <Editable
+                onKeyDown={(e:any) => {
+                    onKeyDown(e)
+                    onKeyDown_E(e)
+                }}
+
+                renderLeaf={props => <Leaf {...props} />}
+                onDOMBeforeInput={(event: InputEvent) => {
+                    // event.preventDefault()
+                    switch (event.inputType) {
+                        case 'formatBold':
+                            return toggleFormat(editor, 'bold')
+                        case 'formatItalic':
+                            return toggleFormat(editor, 'italic')
+                        case 'formatUnderline':
+                            return toggleFormat(editor, 'underlined')
+                    }
+                }}
                 renderElement={renderElement}
                 placeholder="Get to work…"
                 spellCheck

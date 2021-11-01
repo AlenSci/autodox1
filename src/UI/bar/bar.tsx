@@ -10,6 +10,9 @@ import SingUp from "../../components/auth/singup";
 import SingIn from "../../components/auth/singIn";
 import OAuth2 from "../../Oauth2";
 import ControlPanel from "../controlpanel";
+import {css} from "@emotion/css";
+import LogoutIcon from "@mui/icons-material/Logout";
+import {Link} from "react-router-dom";
 
 interface Props {
   /**
@@ -39,14 +42,21 @@ export function Bar(props: any) {
     console.log(token.length >= 10)
 
     return (<HideOnScroll  {...props}>
-        <AppBar    position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} style={{padding: 0}}>
-            <Toolbar style={{padding:0, margin:0}} >
-                    <MyButton/>
-                <Typography  variant="h6" component="div" sx={{flexGrow: 1}}>
+        <AppBar
+            className={css`
+            background-color: #fff;
+            background-color: rgba(250, 250, 250, 0.1);
+            backdrop-filter: blur(4px);
+        `}
+
+            position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}} style={{padding: 0}}>
+            <Toolbar style={{padding: 0, margin: 0}}>
+                <MyButton/>
+                <Typography color={'gray'} variant="h6" component="div" sx={{flexGrow: 1}}>
                     ِAUTODOX
                 </Typography>
 
-                {token.length <= 9 ? <div style={{display:'flex'}}>
+                {token.length <= 9 ? <div style={{display: 'flex'}}>
                     <AlertDialog>
                         <div style={{
                             height: '400px',
@@ -57,7 +67,17 @@ export function Bar(props: any) {
                         </div>
                     </AlertDialog>
                     <OAuth2/>
-                </div>: <ControlPanel/>}
+                </div> : <ControlPanel
+                    menu={[{e: <Link to={'/profile'}> <p>Profile</p> </Link>}, {e: 'My account'}, {
+                        action: () => {
+                            window.localStorage.clear();
+                            window.location.reload();
+                        },
+                        style: {color: 'tomato'},
+                        e: <div style={{display: 'flex'}}><LogoutIcon/>Sign out</div>
+                    },
+
+                    ]}/>}
 
             </Toolbar>
         </AppBar>

@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import {css} from "@emotion/css";
 
 const drawerWidth = 240;
 
@@ -47,20 +48,20 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
 //   }),
 // }));
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
+const DrawerHeader = styled('div')(({theme}) => ({
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
 }));
 
 export default function PersistentDrawerLeft(props: any) {
   const Component = props.Component
   const DrawerContent = props.DrawerContent
   const Bar = props.Bar
-  const theme = useTheme();
+  // const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -73,11 +74,12 @@ export default function PersistentDrawerLeft(props: any) {
         <Box sx={{display: 'flex'}}>
 
             <Bar Button={() =>
-                <IconButton style={{color: 'white'}} onClick={handleDrawerOpen}>
+                <IconButton onClick={handleDrawerOpen}>
                     <MenuIcon/>
                 </IconButton>
             }
             />
+
 
             <Drawer
                 sx={{
@@ -93,12 +95,14 @@ export default function PersistentDrawerLeft(props: any) {
                 anchor="left"
                 open={open}
             >
-                <DrawerContent/>
+                <div style={{marginTop:'60px'}}>
+                    <DrawerContent/>
+                </div>
             </Drawer>
 
-            <Main open={open}>
+            <Main  open={open}>
                 <DrawerHeader/>
-                <Component/>
+                <Component />
             </Main>
         </Box>
     );

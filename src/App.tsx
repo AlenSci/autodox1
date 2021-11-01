@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import PersistentDrawerLeft from './UI/main/dashboard'
-import {Posts} from "./components/posts";
 import {BrowserRouter as Router} from "react-router-dom";
 import {DrawerContent} from "./UI/bar/DrawerContent";
 import {Bar} from "./UI/bar/bar";
@@ -17,6 +16,7 @@ import {getMainDefinition} from "@apollo/client/utilities";
 
 import Chat from "./components/chat";
 import CheckListsExample from "./apps/text_editor/text_editor";
+import Pages from "./pages";
 const tok = localStorage.getItem('token' )
 const token =  `${tok == 'undefined' ? '':tok}`
 console.log({'token ......':token})
@@ -73,12 +73,9 @@ function App() {
         <ApolloProvider client={client}>
             <Stack spacing={2} sx={{width: '100%'}}>
                 <Router>
-                    <PersistentDrawerLeft Bar={Bar} DrawerContent={DrawerContent} Component={Posts}/>
+                    <PersistentDrawerLeft Bar={Bar} DrawerContent={DrawerContent} Component={Pages}/>
                 </Router>
             </Stack>
-            <LatestComment/>
-            <Chat/>
-            <CheckListsExample/>
         </ApolloProvider>
     );
 }
