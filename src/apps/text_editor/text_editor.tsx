@@ -8,8 +8,8 @@ import {withHtml} from "./components/paste-html";
 import Element from './components/element'
 import {HoveringToolbar, Leaf, toggleFormat} from "./components/hovering-toolbar";
 import useMention from "./hooks/use_mentions";
-import {CHARACTERS, insertMention, withMentions} from "./inserts/mention";
-import {CHARACTERS_E, insertElement} from "./inserts/elements";
+import {CHARACTERS, insertMention, withMentions} from "./inserts/mentoin_element";
+import {components_elements, insertElement} from "./inserts/elements";
 
 const CheckListsExample = () => {
     const [value, setValue] = useState<Descendant[]>(initialValue)
@@ -20,7 +20,7 @@ const CheckListsExample = () => {
     )
 
     const [onChange, onKeyDown, Menu]: any = useMention(editor, /^@(\w+)$/, CHARACTERS, insertMention)
-    const [onChange_E, onKeyDown_E, Menu_E]: any = useMention(editor, /^\/(\w+)$/, CHARACTERS_E, insertElement)
+    const [onChange_E, onKeyDown_E, Menu_E]: any = useMention(editor, /^\/(\w+)$/, Object.keys(components_elements), insertElement)
 
     return (
         <Slate editor={editor} value={value} onChange={value => {

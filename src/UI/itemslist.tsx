@@ -1,6 +1,5 @@
 import React from 'react';
-import {Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography} from "@mui/material";
-import SwipeableViews from 'react-swipeable-views';
+import {List} from "@mui/material";
 import MessageItem from "./messageitem";
 
 export default function AlignItemsList(props: any) {
