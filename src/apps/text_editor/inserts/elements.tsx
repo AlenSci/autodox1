@@ -1,12 +1,13 @@
 import {Element as SlateElement, Transforms} from "slate";
 import React from "react";
-import {Divider, Table, TableBody, TableCell, TableRow, Typography} from "@mui/material";
+import {Divider, Table, TableBody, Typography} from "@mui/material";
 import {ReactEditor, useReadOnly, useSlateStatic} from "slate-react";
 import {css} from "@emotion/css";
 import {ImageElement} from "../Functions/paste-html";
 import uniqid from "uniqid";
 import {Refer} from "../components/refer";
 import TableCellComponent from "../components/table_cell";
+import TableRowComponent from "../components/TableRow";
 
 
 export const components_elements: any = {
@@ -77,7 +78,7 @@ export const components_elements: any = {
         'element': (props: any) => <ImageElement {...props} />,
     },
     'table': {
-        'element': (props: any) => <Table>
+        'element': (props: any) => <Table style={{marginLeft: '30px'}}>
             <TableBody style={{border: '1px solid black'}} {...props.attributes}>{props.children}</TableBody>
         </Table>,
         'insert': (character: any) => {
@@ -169,7 +170,7 @@ export const components_elements: any = {
         },
     },
     'table-row': {
-        'element': (props: any) => <TableRow {...props.attributes}>{props.children}</TableRow>,
+        'element': (props: any) => TableRowComponent(props),
     },
     'table-cell': {
         'element': (props: any) => TableCellComponent(props),

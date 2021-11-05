@@ -1,8 +1,9 @@
 import {ReactEditor, useSlate} from "slate-react";
 import React, {useState} from "react";
-import {Editor, Transforms} from "slate";
+import {Transforms} from "slate";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import ReactJson from "react-json-view";
+import FindMatch from "../../../Functions/FindMatch";
 
 export const Refer = (props: any) => {
     const editor: any = useSlate()
@@ -31,13 +32,6 @@ export const Refer = (props: any) => {
         }
 
         if (state) {
-            // Transforms.insertNodes(
-            //     editor,
-            //     {type: 'paragraph', text: target.text},
-            //     {
-            //         at: SELECTION,
-            //     }
-            // )
             Transforms.setNodes(
                 editor,
                 {data: target, x: x},
@@ -54,16 +48,8 @@ export const Refer = (props: any) => {
         setSELECTION(editor.selection)
     }
     const data = props.element.data
-    const [match]: any = Editor.nodes(editor, {
-        at: [],
-        match: (n: any) => {
-            return data ? (n.id === data.id) : false
-        },
-    });
-    // const regex = /-.+/gi;
-    // const table_id = data.id.replace(regex, '')
-    // const table = document.getElementsByTagName('table')
-    // console.log({table: table.rows})
+    const match = FindMatch(editor,(n: any) => data ? (n.id === data.id) : false)
+
     return (
         <ClickAwayListener
             onClickAway={handleClickAway}>
@@ -72,9 +58,7 @@ export const Refer = (props: any) => {
                 style={{backgroundColor: 'lightblue'}} {...props.attributes}
             >
                 {props.children}
-                {/*<ReactJson src={props.element.data} />*/}
-                <ReactJson src={match[0].children[0]}/>
-                {/*<CheckboxList/>*/}
+                <ReactJson src={{match:match}}/>
             </div>
         </ClickAwayListener>);
 };

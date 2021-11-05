@@ -81,7 +81,6 @@ const deserialize: any = (el: any) => {
 
 export const withHtml = (editor:any) => {
   const { insertData, isInline, isVoid } = editor
-
   editor.isInline = (element:any) => {
     return element.type === 'link' ? true : isInline(element)
   }
