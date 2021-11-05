@@ -1,8 +1,10 @@
 import {Descendant} from "slate";
+import uniqid from "uniqid";
 
 const initialValue: Descendant[] = [
     {
         type: 'paragraph',
+        id:uniqid(),
         children: [
             {
                 text:
@@ -12,43 +14,23 @@ const initialValue: Descendant[] = [
     },
     {
         type: 'image',
+        id:uniqid(),
         checked: true,
         children: [{text: 'xxxx'}],
     },
 
     {
         type: 'check-list-item',
+        id:uniqid(),
         checked: true,
         children: [{text: 'Slide to the left.'}],
     },
     {
         type: 'check-list-item',
+        id:uniqid(),
         checked: true,
         children: [{text: 'Slide to the right.'}],
     },
-    {
-        type: 'check-list-item',
-        checked: false,
-        children: [{text: 'Criss-cross.'}],
-    },
-    {
-        type: 'check-list-item',
-        checked: true,
-        children: [{text: 'Criss-cross!'}],
-    },
-    {
-        type: 'check-list-item',
-        checked: false,
-        children: [{text: 'Cha cha real smooth…'}],
-    },
-    {
-        type: 'check-list-item',
-        checked: false,
-        children: [{text: "Let's go to work!"}],
-    },
-    {
-        type: 'paragraph',
-        children: [{text: 'Try it out for yourself!'}],
-    },
+
 ];
 export default initialValue

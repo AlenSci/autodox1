@@ -13,7 +13,6 @@ const useMention = (editor:Editor, matching:any, CHARACTERS:any, insertMention:F
   const chars = CHARACTERS.filter((c:any) =>
     c.toLowerCase().startsWith(search.toLowerCase())
   ).slice(0, 10)
-
   const onKeyDown = useCallback(
     event => {
       if (target) {
@@ -57,23 +56,23 @@ const useMention = (editor:Editor, matching:any, CHARACTERS:any, insertMention:F
   const onChange = (value:any)=> {
         const { selection } = editor
         if (selection && Range.isCollapsed(selection)) {
-          const [start] = Range.edges(selection)
-          const wordBefore = Editor.before(editor, start, { unit: 'word' })
-          const before = wordBefore && Editor.before(editor, wordBefore)
-          const beforeRange = before && Editor.range(editor, before, start)
-          const beforeText = beforeRange && Editor.string(editor, beforeRange)
-          const beforeMatch = beforeText && beforeText.match(matching)
-          const after = Editor.after(editor, start)
-          const afterRange = Editor.range(editor, start, after)
-          const afterText = Editor.string(editor, afterRange)
-          const afterMatch = afterText.match(/^(\s|$)/)
+            const [start] = Range.edges(selection)
+            const wordBefore = Editor.before(editor, start, {unit: 'word'})
+            const before = wordBefore && Editor.before(editor, wordBefore)
+            const beforeRange = before && Editor.range(editor, before, start)
+            const beforeText = beforeRange && Editor.string(editor, beforeRange)
+            const beforeMatch = beforeText && beforeText.match(matching)
+            const after = Editor.after(editor, start)
+            const afterRange = Editor.range(editor, start, after)
+            const afterText = Editor.string(editor, afterRange)
+            const afterMatch = afterText.match(/^(\s|$)/)
 
-          if (beforeMatch && afterMatch) {
-            setTarget(beforeRange)
-            setSearch(beforeMatch[1])
-            setIndex(0)
-            return
-          }
+            if (beforeMatch && afterMatch) {
+                setTarget(beforeRange)
+                setSearch(beforeMatch[1])
+                setIndex(0)
+                return
+            }
         }
 
         setTarget(null)

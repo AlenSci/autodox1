@@ -1,26 +1,41 @@
 import {Element as SlateElement, Transforms} from "slate";
 import React from "react";
-import {Divider, Table, TableBody, TableCell, TableRow} from "@mui/material";
+import {Divider, Table, TableBody, TableCell, TableRow, Typography} from "@mui/material";
 import {ReactEditor, useReadOnly, useSlateStatic} from "slate-react";
 import {css} from "@emotion/css";
-import {ImageElement} from "../components/paste-html";
-
-
+import {ImageElement} from "../Functions/paste-html";
+import uniqid from "uniqid";
+import {Refer} from "../components/refer";
+import TableCellComponent from "../components/table_cell";
 
 
 export const components_elements: any = {
+    'refer': {
+        'element': (props: any) => <Refer {...props} />,
+        'insert': (character: any) => ([
+            {
+                type: 'refer',
+                data: [],
+                id: uniqid(),
+                children: [{text: ''}],
+            }]),
+    },
     'divider': {
         'element': (props: any) => <Divider {...props} />,
         'insert': (character: any) => ([{
             type: character,
+            id: uniqid(),
             children: [{text: ''}],
         }, {
             type: 'paragraph',
+            id: uniqid(),
             children: [{text: ''}],
         }]),
     },
     'quote': {
-        'element': (props: any) => <blockquote {...props.attributes}>{props.children}</blockquote>,
+        'element': (props: any) => <Typography style={{borderLeft: 'black solid 3px', paddingLeft: '10px'}} variant="h6"
+                                               gutterBottom
+                                               component="div" {...props.attributes}>{props.children}</Typography>,
     },
     'code': {
         'element': (props: any) => <pre>
@@ -32,6 +47,20 @@ export const components_elements: any = {
     },
     'check-list-item': {
         'element': (props: any) => <CheckListItemElement {...props} />,
+    },
+    'list-item': {
+        'element': (props: any) => <li {...props.attributes}>{props.children}</li>,
+    },
+    'ordered-list-item': {
+        'element': (props: any) => <ol {...props.attributes}>{props.children}</ol>,
+        'insert': (character: any) => ({
+            type: 'ordered-list-item',
+            id: uniqid(),
+            children: [{
+                type: 'list-item',
+                children: [{text: ''}],
+            }],
+        }),
     },
     'heading-one': {
         'element': (props: any) => <h1 {...props.attributes}>{props.children}</h1>,
@@ -49,27 +78,35 @@ export const components_elements: any = {
     },
     'table': {
         'element': (props: any) => <Table>
-            <TableBody {...props.attributes}>{props.children}</TableBody>
+            <TableBody style={{border: '1px solid black'}} {...props.attributes}>{props.children}</TableBody>
         </Table>,
-        'insert': (character: any) => ({
+        'insert': (character: any) => {
+            const id = uniqid()
+            return {
             type: 'table',
+            id: id,
             children: [
                 {
                     type: 'table-row',
+                    id:id+'-0',
                     children: [
                         {
                             type: 'table-cell',
+                            id:id+'-00',
                             children: [{text: ''}],
                         },
                         {
+                            id:id+'-01',
                             type: 'table-cell',
                             children: [{text: 'Human', bold: true}],
                         },
                         {
+                            id:id+'-02',
                             type: 'table-cell',
                             children: [{text: 'Dog', bold: true}],
                         },
                         {
+                            id:id+'-03',
                             type: 'table-cell',
                             children: [{text: 'Cat', bold: true}],
                         },
@@ -77,58 +114,70 @@ export const components_elements: any = {
                 },
                 {
                     type: 'table-row',
+                    id:id+'-1',
                     children: [
                         {
+                            id:id+'-10',
                             type: 'table-cell',
                             children: [{text: '# of Feet', bold: true}],
                         },
                         {
+                            id:id+'-11',
                             type: 'table-cell',
                             children: [{text: '2'}],
                         },
                         {
+                            id:id+'-12',
                             type: 'table-cell',
                             children: [{text: '4'}],
                         },
                         {
+                            id:id+'-12',
                             type: 'table-cell',
                             children: [{text: '4'}],
                         },
                     ],
                 },
                 {
+                    id:id+'-2',
                     type: 'table-row',
                     children: [
                         {
+                            id:id+'-20',
                             type: 'table-cell',
                             children: [{text: '# of Lives', bold: true}],
                         },
                         {
+                            id:id+'-21',
                             type: 'table-cell',
                             children: [{text: '1'}],
                         },
                         {
+                            id:id+'-22',
                             type: 'table-cell',
                             children: [{text: '1'}],
                         },
                         {
+                            id:id+'-23',
                             type: 'table-cell',
                             children: [{text: '9'}],
                         },
                     ],
                 },
             ],
-        }),
+        }
+        },
     },
     'table-row': {
         'element': (props: any) => <TableRow {...props.attributes}>{props.children}</TableRow>,
     },
     'table-cell': {
-        'element': (props: any) =><TableCell {...props.attributes}>{props.children}</TableCell>,
+        'element': (props: any) => TableCellComponent(props),
     },
     'other': {
         'insert': (character: any) => ({
             type: character,
+            id: uniqid(),
             children: [{text: ''}],
         }),
     },

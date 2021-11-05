@@ -1,9 +1,7 @@
-import {MentionElement} from "../components/custom-types";
 import {Transforms} from "slate";
 import React from "react";
 import {useFocused, useSelected} from "slate-react";
-import {components_elements} from "./elements";
-
+import uniqid from 'uniqid';
 
 
 const Mention = ({ attributes, children, element }:any) => {
@@ -36,6 +34,7 @@ export const mentoin_element: any = {
         'element': (props: any) => <Mention {...props} />,
         'insert': (character: any) => ({
             type: 'mention',
+            id:uniqid(),
             character,
             children: [{text: ''}],
         }),

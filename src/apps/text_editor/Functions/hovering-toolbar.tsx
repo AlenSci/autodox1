@@ -3,7 +3,7 @@ import {ReactEditor, useSlate} from 'slate-react'
 import {Editor, Range, Text, Transforms,} from 'slate'
 import {css} from '@emotion/css'
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
-import {Button, Icon, Menu, Portal} from './components'
+import {Button, Icon, Menu, Portal} from '../components/components'
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 
@@ -24,7 +24,9 @@ const isFormatActive = (editor:any, format:any) => {
   return !!match
 }
 
-export const Leaf = ({ attributes, children, leaf }:any) => {
+export const Leaf = (props:any) => {
+  var {attributes, children, leaf, MarKRenderLeaf, SearchLeaf}  = props
+
   if (leaf.bold) {
     children = <strong>{children}</strong>
   }
@@ -36,9 +38,12 @@ export const Leaf = ({ attributes, children, leaf }:any) => {
   if (leaf.underlined) {
     children = <u>{children}</u>
   }
-
-  return <span {...attributes}>{children}</span>
-}
+  if (leaf.highlight) {
+    return <SearchLeaf {...props} />
+  } else {
+    return <MarKRenderLeaf {...props} />;
+  }
+};
 
 export const HoveringToolbar = () => {
   const ref = useRef<HTMLDivElement | null>()
