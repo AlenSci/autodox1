@@ -132,7 +132,7 @@ export const components_elements: any = {
                             children: [{text: '4'}],
                         },
                         {
-                            id:id+'-12',
+                            id:id+'-13',
                             type: 'table-cell',
                             children: [{text: '4'}],
                         },

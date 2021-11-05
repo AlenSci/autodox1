@@ -34,7 +34,6 @@ function Chat() {
             return chats
         }, [data],
     );
-    console.log({'chats': chats})
 
 
     const messages = chats.map((item: any) => {
