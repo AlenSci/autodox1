@@ -1,8 +1,9 @@
 import Prism from 'prismjs'
 import React, {useCallback, useState} from 'react'
-import {Text, Transforms} from 'slate'
+import {Text} from 'slate'
 import {css} from '@emotion/css'
-import uniqid from "uniqid";
+import Tooltip from "@mui/material/Tooltip";
+import CollabeHoeer from "../components/collabe_user_hover";
 
 // prettier-ignore
 // eslint-disable-next-line
@@ -82,56 +83,51 @@ const useMarkDown = () => {
   }, []);
 
 
-  const Leaf = ({attributes, children, leaf}: any) => {
-
-
-
-    return (
-        <span
-            {...attributes}
-            className={css`
-        font-weight: ${leaf.bold && 'bold'};
-        
-        ${leaf.bold &&
-            css`
-            &:hover {
-            color: red;
-            }
-          `}
-          
+  const Leaf = (props: any) => {
+    const {attributes, children, leaf} = props
+      return (
+          <span
+              {...attributes}
+              className={css`
         font-style: ${leaf.italic && 'italic'};
         text-decoration: ${leaf.underlined && 'underline'};
         ${leaf.title &&
-            css`
+              css`
             display: inline-block;
             font-weight: bold;
             font-size: 20px;
             margin: 20px 0 10px 0;
           `}
+          
+          ${leaf.bold &&
+              css`
+            font-weight: bold;
+          `}
         ${leaf.list &&
-            css`
+              css`
             padding-left: 10px;
             font-size: 20px;
             line-height: 10px;
           `}
         ${leaf.hr &&
-            css`
+              css`
             display: block;
             text-align: center;
             border-bottom: 2px solid #ddd;
           `}
           
         ${leaf.code &&
-            css`
+              css`
             font-family: monospace;
             background-color: #eee;
             padding: 3px;
           `}
       `}
-        >
+          >
       {children}
     </span>
-    );
+      );
+
   };
   return [decorate, renderLeaf];
 

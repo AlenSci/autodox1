@@ -174,6 +174,15 @@ export const components_elements: any = {
     },
     'table-cell': {
         'element': (props: any) => TableCellComponent(props),
+        'insert': (character: any) => {
+            console.log('Inserting')
+            console.log(character)
+            return {
+            id: '-23',
+            type: 'table-cell',
+            children: [{text: 'new cell is here.'}],
+        }
+        },
     },
     'other': {
         'insert': (character: any) => ({

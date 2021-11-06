@@ -6,10 +6,10 @@ import MutationHook from "./hooks/mutation_hook";
 import {GOOGLE_AUTH} from "./queries/auth";
 
 export default function OAuth2() {
-    const [x, y, data] = MutationHook(GOOGLE_AUTH)
+    const [exec, load, data] = MutationHook(GOOGLE_AUTH)
     const {signIn, loaded, signOut} = useGoogleLogin({
         onSuccess: (e) => {
-            x({token:e.tokenObj.id_token})
+            exec({token:e.tokenObj.id_token})
             localStorage.setItem('image', e.profileObj.imageUrl)
         },
         clientId: '218303560881-osv51bj8cmnq71sopn3331t2k7stkcvb.apps.googleusercontent.com',
@@ -29,7 +29,7 @@ export default function OAuth2() {
 
 
     return (<div>
-        {y(<Tooltip title="Sign in" followCursor>
+        {load(<Tooltip title="Sign in" followCursor>
             <IconButton onClick={signIn}><GoogleIcon/></IconButton>
         </Tooltip>)}
     </div>);

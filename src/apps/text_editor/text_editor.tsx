@@ -1,6 +1,6 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import {Editable, Slate, withReact,} from 'slate-react'
-import {createEditor, Descendant, Editor, Element as SlateElement, Point, Range, Transforms,} from 'slate'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import {Editable, ReactEditor, Slate, withReact,} from 'slate-react'
+import {createEditor, Descendant, Editor, Element as SlateElement, Point, Range, Text, Transforms,} from 'slate'
 import {withHistory} from 'slate-history'
 import {withMyPlugin} from "./plugins/other";
 import {withHtml} from "./Functions/paste-html";
@@ -13,8 +13,13 @@ import useSearch from "./hooks/use_search";
 import {css} from "@emotion/css";
 import useMarkDown from "./Functions/markdown-preview";
 import {withShortcuts} from "./Functions/markdown-shortcuts";
-// import initialValue from "./components/initialValue";
-// localStorage.setItem('value', JSON.stringify(initialValue))
+import COLLAPORATOIN, {COLLAPORATOIN_SUB} from "../../queries/text_editor";
+import MutationHook from "../../hooks/mutation_hook";
+
+import SubscriptionHook from "../../hooks/subscription_hook";
+import initialValue from "./components/initialValue";
+localStorage.setItem('value', JSON.stringify(initialValue))
+
 const CheckListsExample = () => {
 
     var init: any = localStorage.getItem('value')
@@ -30,15 +35,52 @@ const CheckListsExample = () => {
         withReact,
         withMyPlugin
     ];
-    var WITHS :any = createEditor()
-    withs.map((i: any) => {WITHS = i(WITHS)});
+
+    var WITHS: any = createEditor()
+    withs.map((i: any) => {
+        WITHS = i(WITHS)
+    });
     const editor = useMemo(() => WITHS, []);
+    const [SUB_load, SUB_data] = SubscriptionHook(COLLAPORATOIN_SUB, {id: 0});
+    const [exec, load, data] = MutationHook(COLLAPORATOIN)
+    const {apply} = editor;
+    const parsed_data = useMemo(()=>{
+        return SUB_data.collaborate&& JSON.parse(SUB_data.collaborate.message)
+    },[SUB_data.collaborate])
+
+    useEffect(() => {
+        if (parsed_data) {
+            editor.apply(parsed_data)
+            console.log(parsed_data)
+            Transforms.setNodes(
+                editor,
+                {
+                    parsed_data: parsed_data,
+                    collaborate: true, sender: SUB_data.collaborate.sender
+                },
+                {
+                    at: parsed_data.path
+                }
+            );
+            setTimeout(() => {
+                Transforms.setNodes(
+                    editor,
+                    {
+                        collaborate: false
+                    },
+                    {
+                        at: parsed_data.path
+                    }
+                );
+            }, 1000)
+        }
+    }, [parsed_data]);
+
     const [onChange, onKeyDown, Menu]: any = useMention(editor, /^@(\w+)$/, CHARACTERS, insertMention)
     const [onChange_E, onKeyDown_E, Menu_E]: any = useMention(editor, /^\/(\w+)$/, Object.keys(components_elements), insertElement)
     const [search, setSearch] = useState<string | undefined>()
     const [SearchDecorate, SearchLeaf]: any = useSearch(search);
     const [MarkDecorate, MarKRenderLeaf] = useMarkDown()
-
 
     return (
         <Slate
@@ -74,10 +116,15 @@ const CheckListsExample = () => {
                 onKeyDown={(e: any) => {
                     onKeyDown(e)
                     onKeyDown_E(e)
+                    editor.apply = (operation: any) => {
+                        exec({properties: JSON.stringify(operation)})
+                        return apply(operation)
+                    };
+
                 }}
 
 
-                renderLeaf={props => <Leaf SearchLeaf={SearchLeaf} MarKRenderLeaf={MarKRenderLeaf} {...props} />}
+                renderLeaf={props => <Leaf style={{color:'red'}} SearchLeaf={SearchLeaf} MarKRenderLeaf={MarKRenderLeaf} {...props} />}
                 onDOMBeforeInput={(event: InputEvent) => {
                     // event.preventDefault()
                     switch (event.inputType) {

@@ -13,19 +13,20 @@ const TableCellComponent = (props: any) => {
 
     const cell_id = props.element.id
     const cell_detentions = find_cell_id.exec(cell_id)
-    const column_number = cell_detentions&& cell_detentions[1][1]
-    const row_number = cell_detentions&& cell_detentions[1][0]
-    const table_id = cell_id.replace(find_cell_id, '')
+    const column_number = cell_detentions && cell_detentions[1][1]
+    const row_number = cell_detentions && cell_detentions[1][0]
 
+    const table_id = cell_id.replace(find_cell_id, '')
     const cell_text = props.element.children[0].text
     const find_vars = /\[(\w+)\]/gi;
     // @ts-ignore
     var result: any
-    const is_formula = cell_text && cell_text.replace(' ','')[0] === '='
+    const is_formula = cell_text && cell_text.replace(' ', '')[0] === '='
     const column_value = FindMatch(editor, (n: any) => {
         return cell_id ? (n.id === table_id + '-0' + column_number) : false
     });
-    const is_column_formula = column_value&& column_value.replace(' ','')[0] === '='
+    const is_column_formula = column_value && column_value.replace(' ', '')[0] === '='
+
 
     // parse column formula
     if (is_column_formula) {
@@ -43,7 +44,7 @@ const TableCellComponent = (props: any) => {
 
         });
         const find_column_vars = /\[(\w+)\]/gi
-        const parsed_column_value = column_value&& column_value.replaceAll(find_column_vars, `[${row_number}$1]`)
+        const parsed_column_value = column_value && column_value.replaceAll(find_column_vars, `[${row_number}$1]`)
         const fObj = new Formula();
         try {
             fObj.setFormula(parsed_column_value);
@@ -94,7 +95,9 @@ const TableCellComponent = (props: any) => {
         content = result
     }
 
+
     return (<TableCell
+
         onMouseEnter={() => {
             setMouseEnter(true)
         }}
@@ -103,7 +106,7 @@ const TableCellComponent = (props: any) => {
         }}
         {...props.attributes}>
         <Tooltip
-            title={`id: ${cell_id.replace(/(.+)-(.+)/gi, '$2')} result: ${result}`}
+            title={`id: ${cell_id.replace(/(.+)-(.+)/gi, '$2')} result: ${result} tid:${table_id}`}
             placement="top"
             arrow
         >

@@ -6,6 +6,7 @@ import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import {Button, Icon, Menu, Portal} from '../components/components'
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
+import CollabeHoeer from "../components/collabe_user_hover";
 
 export const toggleFormat = (editor:any, format:any) => {
   const isActive = isFormatActive(editor, format)
@@ -24,11 +25,13 @@ const isFormatActive = (editor:any, format:any) => {
   return !!match
 }
 
-export const Leaf = (props:any) => {
-  var {attributes, children, leaf, MarKRenderLeaf, SearchLeaf}  = props
+export const Leaf = (props: any) => {
 
-  if (leaf.bold) {
-    children = <strong>{children}</strong>
+
+  var {attributes, children, leaf, MarKRenderLeaf, SearchLeaf} = props
+
+  if (leaf.collaborate) {
+    return <CollabeHoeer {...props} />
   }
 
   if (leaf.italic) {

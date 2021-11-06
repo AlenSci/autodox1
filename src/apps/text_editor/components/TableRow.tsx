@@ -15,7 +15,7 @@ const TableRowComponent = (props: any) => {
     const row_id = props.element.id
     const row_number = row_id.replace(find_cell_id, '$2')
     const table_id = row_id.replace(find_cell_id, '$1')
-    const newRowid = table_id +'-'+ (parseInt(row_number) + 1)
+    const newRowid = table_id + '-' + (parseInt(row_number) + 1)
     const new_row = {
         type: 'table-row',
         id: newRowid,
@@ -26,7 +26,7 @@ const TableRowComponent = (props: any) => {
                 children: [{text: 'new one is here.', bold: true}],
             },
             {
-                id: newRowid +'1',
+                id: newRowid + '1',
                 type: 'table-cell',
                 children: [{text: '2'}],
             },
@@ -49,16 +49,21 @@ const TableRowComponent = (props: any) => {
         // console.log(props.element);
         var target: any = null
         try {
-            target = ReactEditor.toSlateNode(editor,ref.current)
+            target = ReactEditor.toSlateNode(editor, ref.current)
         } catch (e) {
             console.error(e)
         }
-        var path  = ReactEditor.findPath(editor,target)
-        path[1]+=1
-        Transforms.insertNodes(editor, new_row, {at: path, offset:1})
+        var path = ReactEditor.findPath(editor, target)
+        path[1] += 1
+        Transforms.insertNodes(editor, new_row, {at: path, offset: 1})
     };
 
-    return (<Tooltip ref={ref}  arrow title={
+    //insert column
+
+
+
+
+    return (<Tooltip ref={ref} arrow title={
         <IconButton
             style={{color: 'white'}}
             onClick={handleClick}
