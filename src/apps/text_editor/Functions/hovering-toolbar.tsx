@@ -55,6 +55,10 @@ export const HoveringToolbar = () => {
   useEffect(() => {
     const el = ref.current
     const {selection} = editor
+    //TODO
+    // if (Node(selectoin).collaborate){
+    //  cond show
+    // }
 
     if (!el) {
       return
@@ -79,8 +83,6 @@ export const HoveringToolbar = () => {
     const position =
         rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2
     el.style.left = `${position < 0 ? 0 : position}px`
-
-
   });
 
   return (

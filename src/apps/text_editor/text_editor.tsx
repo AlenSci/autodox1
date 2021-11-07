@@ -41,40 +41,49 @@ const CheckListsExample = () => {
         WITHS = i(WITHS)
     });
     const editor = useMemo(() => WITHS, []);
-    const [SUB_load, SUB_data] = SubscriptionHook(COLLAPORATOIN_SUB, {id: 0});
+    const [SUB_load, SUB_data]: any = SubscriptionHook(COLLAPORATOIN_SUB, {id: 0});
     const [exec, load, data] = MutationHook(COLLAPORATOIN)
     const {apply} = editor;
-    const parsed_data = useMemo(()=>{
-        return SUB_data.collaborate&& JSON.parse(SUB_data.collaborate.message)
-    },[SUB_data.collaborate])
-
     useEffect(() => {
-        if (parsed_data) {
-            editor.apply(parsed_data)
-            console.log(parsed_data)
-            Transforms.setNodes(
-                editor,
-                {
-                    parsed_data: parsed_data,
-                    collaborate: true, sender: SUB_data.collaborate.sender
-                },
-                {
-                    at: parsed_data.path
-                }
-            );
-            setTimeout(() => {
+
+        Editor.withoutNormalizing(editor, () => {
+            const parsed_data = SUB_data.collaborate && JSON.parse(SUB_data.collaborate.message)
+            if (parsed_data) {
+                Transforms.select(editor, parsed_data.selectoin)
+                parsed_data.operations.forEach((op:any)=>{
+                    editor.apply(op);
+                })
+
+
                 Transforms.setNodes(
                     editor,
                     {
-                        collaborate: false
-                    },
-                    {
-                        at: parsed_data.path
+                        collaborate: true,
+                        sender: SUB_data.collaborate.sender
+                    }, {
+                        at: parsed_data.selection.anchor.path
                     }
                 );
-            }, 1000)
-        }
-    }, [parsed_data]);
+                setTimeout(() => {
+                    Transforms.setNodes(
+                        editor,
+                        {
+                            collaborate: false
+                        },
+                        {
+                            at: parsed_data.selection.anchor.path
+                        }
+                    );
+                }, 1000)
+
+
+            }
+        });
+
+
+
+    }, [SUB_data]);
+
 
     const [onChange, onKeyDown, Menu]: any = useMention(editor, /^@(\w+)$/, CHARACTERS, insertMention)
     const [onChange_E, onKeyDown_E, Menu_E]: any = useMention(editor, /^\/(\w+)$/, Object.keys(components_elements), insertElement)
@@ -82,12 +91,15 @@ const CheckListsExample = () => {
     const [SearchDecorate, SearchLeaf]: any = useSearch(search);
     const [MarkDecorate, MarKRenderLeaf] = useMarkDown()
 
+
     return (
         <Slate
             editor={editor}
             value={value}
-            onChange={value => {
+            onChange={(value: any) => {
                 setValue(value)
+                !SUB_data &&exec({properties: JSON.stringify({selection: editor.selection, operations: editor.operations})});
+
                 localStorage.setItem('value', JSON.stringify(value))
                 onChange()
                 onChange_E()
@@ -116,15 +128,11 @@ const CheckListsExample = () => {
                 onKeyDown={(e: any) => {
                     onKeyDown(e)
                     onKeyDown_E(e)
-                    editor.apply = (operation: any) => {
-                        exec({properties: JSON.stringify(operation)})
-                        return apply(operation)
-                    };
-
                 }}
 
 
-                renderLeaf={props => <Leaf style={{color:'red'}} SearchLeaf={SearchLeaf} MarKRenderLeaf={MarKRenderLeaf} {...props} />}
+                renderLeaf={props => <Leaf style={{color: 'red'}} SearchLeaf={SearchLeaf}
+                                           MarKRenderLeaf={MarKRenderLeaf} {...props} />}
                 onDOMBeforeInput={(event: InputEvent) => {
                     // event.preventDefault()
                     switch (event.inputType) {
