@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {Editable, ReactEditor, Slate, withReact,} from 'slate-react'
-import {createEditor, Descendant, Editor, Element as SlateElement, Point, Range, Text, Transforms,} from 'slate'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {Editable, Slate, withReact,} from 'slate-react'
+import {createEditor, Descendant, Editor, Element as SlateElement, Point, Range, Transforms,} from 'slate'
 import {withHistory} from 'slate-history'
 import {withMyPlugin} from "./plugins/other";
 import {withHtml} from "./Functions/paste-html";
-import Element from './components/element'
-import {HoveringToolbar, Leaf, toggleFormat} from "./Functions/hovering-toolbar";
+import Element from './element'
+import {HoveringToolbar, toggleFormat} from "./Functions/hovering-toolbar";
 import useMention from "./hooks/use_mentions";
 import {CHARACTERS, insertMention, withMentions} from "./inserts/mentoin_element";
 import {components_elements, insertElement} from "./inserts/elements";
@@ -18,9 +18,14 @@ import MutationHook from "../../hooks/mutation_hook";
 
 import SubscriptionHook from "../../hooks/subscription_hook";
 import initialValue from "./components/initialValue";
+import {RenderLeaf} from "./render_leaf";
+import decorate from "./decorate";
+import uniqid from "uniqid";
+
 localStorage.setItem('value', JSON.stringify(initialValue))
 
-const CheckListsExample = () => {
+const RichTextEditor = (props:any) => {
+    const id = props.id
 
     var init: any = localStorage.getItem('value')
     init = JSON.parse(init || '[]')
@@ -43,14 +48,12 @@ const CheckListsExample = () => {
     const editor = useMemo(() => WITHS, []);
     const [SUB_load, SUB_data]: any = SubscriptionHook(COLLAPORATOIN_SUB, {id: 0});
     const [exec, load, data] = MutationHook(COLLAPORATOIN)
-    const {apply} = editor;
     useEffect(() => {
-
         Editor.withoutNormalizing(editor, () => {
             const parsed_data = SUB_data.collaborate && JSON.parse(SUB_data.collaborate.message)
-            if (parsed_data) {
-                Transforms.select(editor, parsed_data.selectoin)
-                parsed_data.operations.forEach((op:any)=>{
+            if (parsed_data && parsed_data.editorId === id) {
+                Transforms.select(editor, parsed_data.selection)
+                parsed_data.operations.forEach((op: any) => {
                     editor.apply(op);
                 })
 
@@ -81,7 +84,6 @@ const CheckListsExample = () => {
         });
 
 
-
     }, [SUB_data]);
 
 
@@ -94,11 +96,18 @@ const CheckListsExample = () => {
 
     return (
         <Slate
+
             editor={editor}
             value={value}
             onChange={(value: any) => {
                 setValue(value)
-                !SUB_data &&exec({properties: JSON.stringify({selection: editor.selection, operations: editor.operations})});
+                !SUB_data && exec({
+                    properties: JSON.stringify({
+                        selection: editor.selection,
+                        operations: editor.operations,
+                        editorId: id
+                    })
+                });
 
                 localStorage.setItem('value', JSON.stringify(value))
                 onChange()
@@ -117,22 +126,15 @@ const CheckListsExample = () => {
             />
 
             <Menu/>
-
             <Editable
-                decorate={([node, path]) => {
-                    var ranges: any = []
-                    SearchDecorate([node, path, ranges])
-                    MarkDecorate([node, path, ranges])
-                    return ranges
-                }}
+                decorate={(props) => decorate(props, [SearchDecorate, MarkDecorate])}
                 onKeyDown={(e: any) => {
                     onKeyDown(e)
                     onKeyDown_E(e)
                 }}
-
-
-                renderLeaf={props => <Leaf style={{color: 'red'}} SearchLeaf={SearchLeaf}
-                                           MarKRenderLeaf={MarKRenderLeaf} {...props} />}
+                renderLeaf={props => <RenderLeaf SearchLeaf={SearchLeaf}
+                                                 MarKRenderLeaf={MarKRenderLeaf} {...props} />}
+                // renderLeaf={props =>RenderLeaf(props, [SearchLeaf, MarKRenderLeaf])}
                 onDOMBeforeInput={(event: InputEvent) => {
                     // event.preventDefault()
                     switch (event.inputType) {
@@ -145,7 +147,7 @@ const CheckListsExample = () => {
                     }
                 }}
                 renderElement={renderElement}
-                placeholder="Get to work…"
+                placeholder="Enter some text here. Or hit / and select element..."
                 spellCheck
                 autoFocus
             />
@@ -193,4 +195,4 @@ const withChecklists = (editor:any) => {
 }
 
 
-export default CheckListsExample
+export default RichTextEditor

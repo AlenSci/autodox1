@@ -1,6 +1,6 @@
 import React from "react";
-import {mentoin_element} from "../inserts/mentoin_element";
-import {components_elements} from "../inserts/elements";
+import {mentoin_element} from "./inserts/mentoin_element";
+import {components_elements} from "./inserts/elements";
 
 
 const Element = (props: any) => {

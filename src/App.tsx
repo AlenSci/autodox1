@@ -15,7 +15,7 @@ import {getMainDefinition} from "@apollo/client/utilities";
 
 
 import Chat from "./components/chat";
-import CheckListsExample from "./apps/text_editor/text_editor";
+import RichTextEditor from "./apps/text_editor/text_editor";
 import Pages from "./pages";
 const tok = localStorage.getItem('token' )
 const token =  `${tok == 'undefined' ? '':tok}`
