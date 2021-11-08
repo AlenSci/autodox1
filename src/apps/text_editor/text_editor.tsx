@@ -4,7 +4,7 @@ import {createEditor, Descendant, Editor, Element as SlateElement, Point, Range,
 import {withHistory} from 'slate-history'
 import {withMyPlugin} from "./plugins/other";
 import {withHtml} from "./Functions/paste-html";
-import Element from './element'
+import Render_element from './render_element'
 import {HoveringToolbar, toggleFormat} from "./Functions/hovering-toolbar";
 import useMention from "./hooks/use_mentions";
 import {CHARACTERS, insertMention, withMentions} from "./inserts/mentoin_element";
@@ -23,8 +23,8 @@ import decorate from "./decorate";
 import useHighlighting from "./hooks/use-highlighting";
 import CollabeHoeer from "./components/collabe_user_hover";
 
-// import initialValue from "./components/initialValue";
-// localStorage.setItem('value', JSON.stringify(initialValue))
+import initialValue from "./components/initialValue";
+localStorage.setItem('value', JSON.stringify(initialValue))
 
 const RichTextEditor = (props:any) => {
     const id = props.id
@@ -32,7 +32,7 @@ const RichTextEditor = (props:any) => {
     var init: any = localStorage.getItem('value')
     init = JSON.parse(init || '[]')
     const [value, setValue]: any = useState<Descendant[]>(init)
-    const renderElement = useCallback(props => <Element {...props} />, [])
+    const renderElement = useCallback(props => <Render_element {...props} />, [])
     const withs: any = [
         withShortcuts,
         withMentions,
@@ -96,7 +96,6 @@ const RichTextEditor = (props:any) => {
     const [Highlightedecorate, HighlighteLeaf] = useHighlighting()
     return (
         <Slate
-
             editor={editor}
             value={value}
             onChange={(value: any) => {
@@ -128,6 +127,7 @@ const RichTextEditor = (props:any) => {
 
             <Menu/>
             <Editable
+                style={{marginLeft:'10%', marginRight:'10%'}}
                 decorate={(props) => decorate(props, [SearchDecorate, MarkDecorate, Highlightedecorate])}
                 onKeyDown={(e: any) => {
                     onKeyDown(e)

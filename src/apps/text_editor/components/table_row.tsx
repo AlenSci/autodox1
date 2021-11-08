@@ -3,10 +3,8 @@ import {IconButton, TableRow} from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 import AddIcon from '@mui/icons-material/Add';
 import {Transforms} from "slate";
-import {mentoin_element} from "../inserts/mentoin_element";
 import {ReactEditor, useSlate} from "slate-react";
 import FindMatch from "../../../Functions/FindMatch";
-import uniqid from "uniqid";
 
 const TableRowComponent = (props: any) => {
     const ref: any = useRef<HTMLDivElement | null>();
@@ -59,9 +57,6 @@ const TableRowComponent = (props: any) => {
     };
 
     //insert column
-
-
-
 
     return (<Tooltip ref={ref} arrow title={
         <IconButton

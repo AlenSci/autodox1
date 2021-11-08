@@ -54,7 +54,7 @@ const InlinesExample = () => {
   //       <ToggleEditableButtonButton />
   //     </Toolbar>
   //     <Editable
-  //       renderElement={props => <Element {...props} />}
+  //       renderElement={props => <Render_element {...props} />}
   //       placeholder="Enter some text..."
   //       onKeyDown={onKeyDown}
   //     />
