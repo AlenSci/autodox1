@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Editable, Slate, withReact,} from 'slate-react'
 import {createEditor, Descendant, Editor, Element as SlateElement, Point, Range, Transforms,} from 'slate'
 import {withHistory} from 'slate-history'
@@ -17,12 +17,14 @@ import COLLAPORATOIN, {COLLAPORATOIN_SUB} from "../../queries/text_editor";
 import MutationHook from "../../hooks/mutation_hook";
 
 import SubscriptionHook from "../../hooks/subscription_hook";
-import initialValue from "./components/initialValue";
+
 import {RenderLeaf} from "./render_leaf";
 import decorate from "./decorate";
-import uniqid from "uniqid";
+import useHighlighting from "./hooks/use-highlighting";
+import CollabeHoeer from "./components/collabe_user_hover";
 
-localStorage.setItem('value', JSON.stringify(initialValue))
+// import initialValue from "./components/initialValue";
+// localStorage.setItem('value', JSON.stringify(initialValue))
 
 const RichTextEditor = (props:any) => {
     const id = props.id
@@ -56,7 +58,6 @@ const RichTextEditor = (props:any) => {
                 parsed_data.operations.forEach((op: any) => {
                     editor.apply(op);
                 })
-
 
                 Transforms.setNodes(
                     editor,
@@ -92,8 +93,7 @@ const RichTextEditor = (props:any) => {
     const [search, setSearch] = useState<string | undefined>()
     const [SearchDecorate, SearchLeaf]: any = useSearch(search);
     const [MarkDecorate, MarKRenderLeaf] = useMarkDown()
-
-
+    const [Highlightedecorate, HighlighteLeaf] = useHighlighting()
     return (
         <Slate
 
@@ -113,6 +113,7 @@ const RichTextEditor = (props:any) => {
                 onChange()
                 onChange_E()
             }}>
+
             <HoveringToolbar/>
             <Menu_E/>
             <input
@@ -127,14 +128,13 @@ const RichTextEditor = (props:any) => {
 
             <Menu/>
             <Editable
-                decorate={(props) => decorate(props, [SearchDecorate, MarkDecorate])}
+                decorate={(props) => decorate(props, [SearchDecorate, MarkDecorate, Highlightedecorate])}
                 onKeyDown={(e: any) => {
                     onKeyDown(e)
                     onKeyDown_E(e)
                 }}
-                renderLeaf={props => <RenderLeaf SearchLeaf={SearchLeaf}
-                                                 MarKRenderLeaf={MarKRenderLeaf} {...props} />}
-                // renderLeaf={props =>RenderLeaf(props, [SearchLeaf, MarKRenderLeaf])}
+
+                renderLeaf={props => <RenderLeaf leafs={[SearchLeaf, MarKRenderLeaf, CollabeHoeer, HighlighteLeaf]} {...props} />}
                 onDOMBeforeInput={(event: InputEvent) => {
                     // event.preventDefault()
                     switch (event.inputType) {

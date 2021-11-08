@@ -3,6 +3,7 @@ import {Route} from "react-router-dom";
 import LatestComment from "../components/lastcomment";
 import Chat from "../components/chat";
 import RichTextEditor from "../apps/text_editor/text_editor";
+import uniqid from "uniqid";
 
 function Starred() {
   // let { username }: any = useParams()

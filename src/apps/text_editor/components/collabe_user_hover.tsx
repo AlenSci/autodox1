@@ -4,7 +4,9 @@ import React from "react";
 
 const CollabeHoeer = (props: any) => {
     const {attributes, children, leaf} = props
-    return <Tooltip placement="top" arrow open={leaf.collaborate} title={leaf.sender}>
+    var Children: any = children
+    if (leaf.collaborate) {
+        Children = <Tooltip placement="top" arrow open={leaf.collaborate} title={leaf.sender}>
         <span
             className={css`
             font-weight: ${leaf.bold && 'bold'};
@@ -18,8 +20,15 @@ const CollabeHoeer = (props: any) => {
           `}
             {...attributes}
         >
-            {children}
+            {Children}
     </span>
-    </Tooltip>;
+        </Tooltip>
+    }
+    return <span
+        {...attributes}
+    >
+            {Children}
+    </span>;
+
 };
 export default CollabeHoeer

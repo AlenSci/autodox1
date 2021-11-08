@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import {TableCell, Tooltip} from "@mui/material";
-import {useSlate} from "slate-react";
-import {Editor} from "slate";
+import {useSlate, useSlateStatic} from "slate-react";
+import {Editor, Text, Transforms} from "slate";
 import Formula from 'fparser';
 import FindMatch from "../../../Functions/FindMatch";
 
 const TableCellComponent = (props: any) => {
-    const editor: any = useSlate()
+    const editor: any = useSlateStatic()
     const [mouseEnter, setMouseEnter] = useState(false)
 
     const find_cell_id = /-(.+)/gi;
@@ -32,20 +32,31 @@ const TableCellComponent = (props: any) => {
     if (is_column_formula) {
         const cell_vars = [...column_value.matchAll(find_vars)];
         const newarray = cell_vars.map((i: any, index: number) => cell_vars[index][1])
+        const find_column_vars = /\[(\w+)\]/gi
+        const parsed_column_value = column_value && column_value.replaceAll(find_column_vars, `[${row_number}$1]`)
+        const fObj = new Formula();
+
         var evaluatoins = {}
         newarray.map((i: string) => {
             const match_text = FindMatch(editor, (n: any) => {
                 return cell_id ? (n.id === table_id + '-' + row_number + i) : false
             });
+            if (match_text.replace(' ','')[0]==='=') {
+                console.log({parsed_column_value: parsed_column_value, match_text: match_text})
+                try {
+                    const F = new Formula();
+                    F.setFormula(match_text);
+                    result = F.evaluate();
+                    evaluatoins[row_number + i] = result;
+                } catch (e) {
+                }
 
-
-            // @ts-ignore
-            evaluatoins[row_number + i] = match_text;
-
+            } else{
+                // @ts-ignore
+                evaluatoins[row_number + i] = match_text;
+            }
         });
-        const find_column_vars = /\[(\w+)\]/gi
-        const parsed_column_value = column_value && column_value.replaceAll(find_column_vars, `[${row_number}$1]`)
-        const fObj = new Formula();
+
         try {
             fObj.setFormula(parsed_column_value);
             result = fObj.evaluate(evaluatoins);

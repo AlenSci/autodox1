@@ -84,6 +84,9 @@ export const withHtml = (editor:any) => {
   editor.isInline = (element:any) => {
     return element.type === 'link' ? true : isInline(element)
   }
+  editor.isInline = (element:any) => {
+    return element.code ? true : isInline(element)
+  }
 
   editor.isVoid = (element:any) => {
     return element.type === 'image' ? true : isVoid(element)
