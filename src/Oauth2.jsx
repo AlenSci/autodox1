@@ -26,7 +26,7 @@ export default function OAuth2() {
     } else {
         window.localStorage.clear()
     }
-
+    console.log({data:data})
 
     return (<div>
         {load(<Tooltip title="Sign in" followCursor>

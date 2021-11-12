@@ -21,7 +21,7 @@ const tok = localStorage.getItem('token' )
 const token =  `${tok == 'undefined' ? '':tok}`
 console.log({'token ......':token})
 const wsLink:any = new WebSocketLink({
-  uri: `ws://127.0.0.1:8000/?token=${token}`,
+  uri: `ws://localhost:8000/?token=${token}`,
     options: {
         reconnect: true,
         connectionParams: {
