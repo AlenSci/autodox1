@@ -1,8 +1,9 @@
 import React from 'react'
 import Inbox from './Inbox'
 import Starred from "./Starred";
-import SendEmail from "./send_email";
+import SendEmail from "./api";
 import Profile from './profile'
+import Draft from "./Draf";
 
 function Pages() {
     // console.log(AllPages.Inbox)
@@ -12,6 +13,7 @@ function Pages() {
           <Starred/>
           <SendEmail/>
           <Profile/>
+          <Draft/>
       </div>
   );
 }

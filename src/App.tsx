@@ -9,14 +9,10 @@ import {ApolloClient, ApolloLink, ApolloProvider, createHttpLink, InMemoryCache,
 import {setContext} from '@apollo/client/link/context';
 import {useSnackbar, VariantType} from 'notistack';
 import {onError} from "@apollo/client/link/error";
-import LatestComment from './components/lastcomment'
 import {WebSocketLink} from '@apollo/client/link/ws';
 import {getMainDefinition} from "@apollo/client/utilities";
-
-
-import Chat from "./components/chat";
-import RichTextEditor from "./apps/text_editor/text_editor";
 import Pages from "./pages";
+
 const tok = localStorage.getItem('token' )
 const token =  `${tok == 'undefined' ? '':tok}`
 console.log({'token ......':token})
@@ -69,6 +65,8 @@ function App() {
         link: splitLink,
         cache: new InMemoryCache()
     });
+
+
     return (
         <ApolloProvider client={client}>
             <Stack spacing={2} sx={{width: '100%'}}>
@@ -76,6 +74,7 @@ function App() {
                     <PersistentDrawerLeft Bar={Bar} DrawerContent={DrawerContent} Component={Pages}/>
                 </Router>
             </Stack>
+
         </ApolloProvider>
     );
 }

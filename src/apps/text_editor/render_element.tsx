@@ -7,11 +7,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {ReactEditor, useSlate} from "slate-react";
 import {Transforms} from "slate";
 import useGetNode from "./hooks/useGetNode";
+import LeftVert from "../../components/LeftVert";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import {Route} from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 
 const Render_element = (props: any) => {
     const [ref, target] = useGetNode()
     const {attributes, children, element} = props
-    const x = {};
+    const x :any = {};
     [mentoin_element, components_elements].map((i: any) => {
         Object.keys(i).map((key: any) => {
             if ('element' in i[key]) {
@@ -37,9 +41,21 @@ const Render_element = (props: any) => {
         icon: <DeleteIcon/>,
         title: 'delete',
     }]
+     const buttons = [{
+        icon: <AddIcon/>,
+        title: 'delicate',
+    }]
+    //
     return <Tooltip
         ref={ref} arrow title={<PopVert content={options}/>} placement="left"
     >{x[y] || <span {...attributes}>{children}</span>}</Tooltip>;
+    //TODO replce tooltip with leftVert
+    // return <LeftVert
+    //     {...attributes}
+    //     buttons={buttons}
+    //     options={options}
+    //     button={<MoreVertIcon/>}
+    // > {children} </LeftVert>;
 
 };
 export default Render_element;
