@@ -1,4 +1,4 @@
-FROM node:15.13-alpine
+FROM node:14.9
 WORKDIR /core
 ENV PATH="./node_modules/.bin:$PATH"
 COPY . .
