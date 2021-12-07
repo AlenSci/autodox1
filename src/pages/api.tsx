@@ -6,7 +6,7 @@ function SendEmail() {
     return (
         <Route path="/api">
             <Typography variant='h6'>You can test the api here. </Typography>
-            <iframe src="http://127.0.0.1:8000/" title="graphql api"></iframe>
+            <iframe style={{width:'100%', height:'500px', margin:0}} src="http://127.0.0.1:8000/" title="graphql api"></iframe>
         </Route>
     );
 }

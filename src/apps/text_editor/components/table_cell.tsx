@@ -106,6 +106,8 @@ const TableCellComponent = (props: any) => {
         content = result
     }
 
+    const position = cell_id.replace(/(.+)-(.+)/gi, '$2')
+    const is_column_cell = position[0] == '0'
 
     return (<TableCell
 
@@ -117,7 +119,7 @@ const TableCellComponent = (props: any) => {
         }}
         {...props.attributes}>
         <Tooltip
-            title={`id: ${cell_id.replace(/(.+)-(.+)/gi, '$2')} result: ${result} tid:${table_id}`}
+            title={`position: ${position} result: ${result} tid:${table_id}`}
             placement="top"
             arrow
         >

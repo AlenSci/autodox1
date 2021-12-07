@@ -15,7 +15,7 @@ export default function OAuth2() {
         clientId: '218303560881-osv51bj8cmnq71sopn3331t2k7stkcvb.apps.googleusercontent.com',
         // clientSecret: "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",
         onFailure: (e) => {
-            console.log(e)
+            console.log({'ffff':e})
         },
         cookiePolicy: 'single_host_origin'
     });
@@ -26,11 +26,13 @@ export default function OAuth2() {
     } else {
         window.localStorage.clear()
     }
-    console.log({data:data})
+
 
     return (<div>
         {load(<Tooltip title="Sign in" followCursor>
-            <IconButton onClick={signIn}><GoogleIcon/></IconButton>
+            <IconButton
+                color='primary'
+                onClick={signIn}><GoogleIcon/></IconButton>
         </Tooltip>)}
     </div>);
 };

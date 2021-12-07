@@ -1,6 +1,6 @@
 import {Element as SlateElement, Transforms} from "slate";
 import React from "react";
-import {Divider, Table, TableBody, Typography} from "@mui/material";
+import {Divider, Paper, Table, TableBody, Typography} from "@mui/material";
 import {ReactEditor, useReadOnly, useSlateStatic} from "slate-react";
 import {css} from "@emotion/css";
 import {ImageElement} from "../Functions/paste-html";
@@ -8,15 +8,87 @@ import uniqid from "uniqid";
 import {Refer} from "../components/refer";
 import TableCellComponent from "../components/table_cell";
 import TableRowComponent from "../components/table_row";
-
+import Code from "../components/Code";
 
 export const components_elements: any = {
+    'tableHeader': {
+        'element': (props: any) =>{
+            const { attributes, children, element } = props
+            return(<div {...attributes} contentEditable={false}>
+                <span style={{display: "inline"}}>
+          <input
+              placeholder="Title."
+              value={props.title && ''}
+              onChange={(event:any)=>{
+                  // Transforms.transform()
+                  // props.title = event.target.value
+              }}
+              type="text"/>
+          <span>Filter</span>
+        </span>
+      {children}
+    </div>)
+        },
+        'insert': (character: any) => ([
+            {
+                type: 'tableHeader',
+                id: uniqid(),
+                children: [{text: ''}],
+            }]),
+    },
+    'EditableVoid': {
+        'element': (props: any) =>{
+            const { attributes, children, element } = props
+
+            return(<div {...attributes} contentEditable={false}>
+      <div
+        className={css`
+          box-shadow: 0 0 0 3px #ddd;
+          padding: 8px;
+        `}
+      >
+        <h4>Name:</h4>
+          <input type="text"/>
+        <h4>Left or right handed:</h4>
+        <input
+          type="radio"
+          name="handedness"
+          value="left"
+        />{' '}
+        Left
+        <br />
+        <input
+          type="radio"
+          name="handedness"
+          value="right"
+        />{' '}
+        Right
+        <h4>Tell us about yourself:</h4>
+        <div
+          className={css`
+            padding: 20px;
+            border: 2px solid #ddd;
+          `}
+        >
+            xxx
+        </div>
+      </div>
+      {children}
+    </div>)
+        },
+        'insert': (character: any) => ([
+            {
+                type: 'EditableVoid',
+                data: [],
+                id: uniqid(),
+                children: [{text: ''}],
+            }]),
+    },
     'refer': {
         'element': (props: any) => <Refer {...props} />,
         'insert': (character: any) => ([
             {
                 type: 'refer',
-                data: [],
                 id: uniqid(),
                 children: [{text: ''}],
             }]),
@@ -39,9 +111,7 @@ export const components_elements: any = {
                                                component="div" {...props.attributes}>{props.children}</Typography>,
     },
     'code': {
-        'element': (props: any) => <pre>
-          <code {...props.attributes}>{props.children}</code>
-        </pre>,
+        'element': (props: any) => <Code {...props}/>,
     },
     'bulleted-list': {
         'element': (props: any) => <ul {...props.attributes}>{props.children}</ul>,
@@ -87,6 +157,10 @@ export const components_elements: any = {
             type: 'table',
             id: id,
             children: [
+                {type: 'tableHeader',
+                id:id+'-t',
+                children: [{text: ''}]
+                },
                 {
                     type: 'table-row',
                     id:id+'-0',

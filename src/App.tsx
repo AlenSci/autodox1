@@ -17,7 +17,7 @@ const tok = localStorage.getItem('token' )
 const token =  `${tok == 'undefined' ? '':tok}`
 console.log({'token ......':token})
 const wsLink:any = new WebSocketLink({
-  uri: `ws://localhost:8000/?token=${token}`,
+  uri: `ws://ec2-52-208-240-42.eu-west-1.compute.amazonaws.com/?token=${token}`,
     options: {
         reconnect: true,
         connectionParams: {
@@ -39,7 +39,7 @@ function App() {
     });
 
     const httpLink = createHttpLink({
-        uri: 'http://localhost:8000/',
+        uri: 'http://ec2-52-208-240-42.eu-west-1.compute.amazonaws.com/',
     });
 
     const errorLink = onError(({graphQLErrors, networkError}) => {
@@ -71,6 +71,7 @@ function App() {
         <ApolloProvider client={client}>
             <Stack spacing={2} sx={{width: '100%'}}>
                 <Router>
+
                     <PersistentDrawerLeft Bar={Bar} DrawerContent={DrawerContent} Component={Pages}/>
                 </Router>
             </Stack>

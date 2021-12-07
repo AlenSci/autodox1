@@ -13,6 +13,7 @@ import ControlPanel from "../controlpanel";
 import {css} from "@emotion/css";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {Link} from "react-router-dom";
+import Box from "@mui/material/Box";
 
 interface Props {
   /**
@@ -39,6 +40,7 @@ function HideOnScroll(props: Props) {
 export function Bar(props: any) {
     const token: string = localStorage.getItem('token') || '';
     const MyButton = props.Button
+    const {RightButtons} = props
     console.log(token.length >= 10)
 
     return (<HideOnScroll  {...props}>
@@ -53,31 +55,10 @@ export function Bar(props: any) {
             <Toolbar style={{padding: 0, margin: 0}}>
                 <MyButton/>
                 <Typography color={'gray'} variant="h6" component="div" sx={{flexGrow: 1}}>
-                    ِAUTODOX
+                    ِAUTODOX:             Ali Al-karaawi website sample.
                 </Typography>
 
-                {token.length <= 9 ? <div style={{display: 'flex'}}>
-                    <AlertDialog>
-                        <div style={{
-                            height: '400px',
-                            width: "350px"
-                        }}>
-                            <TabPanel
-                                items={[{name: 'sign in', content: <SingIn/>}, {name: 'sign up', content: <SingUp/>}]}/>
-                        </div>
-                    </AlertDialog>
-                    <OAuth2/>
-                </div> : <ControlPanel
-                    menu={[{e: <Link to={'/profile'}> <p>Profile</p> </Link>}, {e: 'My account'}, {
-                        action: () => {
-                            window.localStorage.clear();
-                            window.location.reload();
-                        },
-                        style: {color: 'tomato'},
-                        e: <div style={{display: 'flex'}}><LogoutIcon/>Sign out</div>
-                    },
-
-                    ]}/>}
+                <RightButtons/>
 
             </Toolbar>
         </AppBar>

@@ -4,6 +4,15 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import {BrowserRouter as Router, Link} from "react-router-dom";
+import AlertDialog from "../dialog";
+import TabPanel from "../tab";
+import SingIn from "../../components/auth/singIn";
+import SingUp from "../../components/auth/singup";
+import OAuth2 from "../../Oauth2";
+import ControlPanel from "../controlpanel";
+import LogoutIcon from "@mui/icons-material/Logout";
+import Toolbar from "@mui/material/Toolbar";
 
 const drawerWidth = 240;
 
@@ -57,26 +66,58 @@ const DrawerHeader = styled('div')(({theme}) => ({
 }));
 
 export default function PersistentDrawerLeft(props: any) {
-  const Component = props.Component
-  const DrawerContent = props.DrawerContent
-  const Bar = props.Bar
-  // const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+    const Component = props.Component
+    const DrawerContent = props.DrawerContent
+    const Bar = props.Bar
+    // const theme = useTheme();
+    const [open, setOpen] = React.useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen((pre:boolean) => {
-        return !pre
-    })
-  };
+    const handleDrawerOpen = () => {
+        setOpen((pre: boolean) => {
+            return !pre
+        })
+    };
+    const token: string = localStorage.getItem('token') || '';
+
+    const RightButtons = () => {
+        return (
+            token.length <= 9 ? <div style={{display: 'flex'}}>
+                <AlertDialog>
+                    <div style={{
+                        height: '400px',
+                        width: "350px"
+                    }}>
+                        <TabPanel
+                            items={[{name: 'sign in', content: <SingIn/>}, {name: 'sign up', content: <SingUp/>}]}/>
+                    </div>
+                </AlertDialog>
+                <OAuth2/>
+            </div> : <ControlPanel
+                menu={[{e: <Link to={'/profile'}><p>Profile</p></Link>}, {e: 'My account'}, {
+                    action: () => {
+                        window.localStorage.clear();
+                        window.location.reload();
+                    },
+                    style: {color: 'tomato'},
+                    e: <div style={{display: 'flex'}}><LogoutIcon/>Sign out</div>
+                },
+
+                ]}/>
+        )
+    }
+
+
 
     return (
         <Box sx={{display: 'flex'}}>
 
-            <Bar Button={() =>
-                <IconButton onClick={handleDrawerOpen}>
-                    <MenuIcon/>
-                </IconButton>
-            }
+            <Bar
+                Button={() =>
+                    <IconButton onClick={handleDrawerOpen}>
+                        <MenuIcon/>
+                    </IconButton>}
+
+                RightButtons={RightButtons}
             />
 
 
@@ -94,15 +135,17 @@ export default function PersistentDrawerLeft(props: any) {
                 anchor="left"
                 open={open}
             >
-                <div style={{marginTop:'60px'}}>
+                <div style={{marginTop: '60px'}}>
                     <DrawerContent/>
                 </div>
             </Drawer>
 
-            <Main  open={open}>
+
+            <Main open={open}>
                 <DrawerHeader/>
-                <Component />
+                <Component/>
             </Main>
         </Box>
     );
-}
+};
+

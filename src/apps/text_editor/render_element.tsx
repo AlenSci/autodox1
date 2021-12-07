@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React from "react";
 import {mentoin_element} from "./inserts/mentoin_element";
 import {components_elements} from "./inserts/elements";
 import {Tooltip} from "@mui/material";
@@ -7,10 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {ReactEditor, useSlate} from "slate-react";
 import {Transforms} from "slate";
 import useGetNode from "./hooks/useGetNode";
-import LeftVert from "../../components/LeftVert";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {Route} from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
+import FunctionsIcon from '@mui/icons-material/Functions';
 
 const Render_element = (props: any) => {
     const [ref, target] = useGetNode()
@@ -28,23 +25,30 @@ const Render_element = (props: any) => {
     const editor: any = useSlate()
 
 
-    const handleClick = (e: any) => {
-        // const x = FindMatch(editor, (n: any) => n.id === row_id, false)
-        // console.log(props.element);
+    const handleDelete = (e: any) => {
         var path = ReactEditor.findPath(editor, target())
         Transforms.delete(editor, {
             at: path,
         });
     };
+    const handleFormula = (e: any) => {
+
+    };
+
     const options = [{
-        onClick: handleClick,
+        onClick: handleDelete,
         icon: <DeleteIcon/>,
         title: 'delete',
+    },
+    {
+        onClick: handleFormula,
+        icon: <FunctionsIcon/>,
+        title: 'formula',
     }]
-     const buttons = [{
-        icon: <AddIcon/>,
-        title: 'delicate',
-    }]
+    //  const buttons = [{
+    //     icon: <AddIcon/>,
+    //     title: 'delicate',
+    // }]
     //
     return <Tooltip
         ref={ref} arrow title={<PopVert content={options}/>} placement="left"
