@@ -8,8 +8,8 @@ import Select from '@mui/material/Select';
 export default function BasicSelect(props:any) {
 
   return (
-    <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
+    <Box >
+      <FormControl>
         <InputLabel id="demo-simple-select-label">{props.label}</InputLabel>
         <Select
           labelId="demo-simple-select-label"
