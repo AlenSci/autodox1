@@ -10,7 +10,7 @@ export function DrawerContent() {
 
         <Divider/>
         <List>
-            {['Inbox', 'Starred', 'api', 'Drafts'].map((text, index) => (
+            {['Inbox', 'text_editor_2', 'api', 'Drafts'].map((text, index) => (
                 <Link to={'/' + text}>
                     <div>
                         <ListItem button key={text}>

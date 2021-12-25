@@ -1,7 +1,6 @@
-import React, {PropsWithChildren, Ref} from 'react'
+import React, { Ref, PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
-import {css, cx} from '@emotion/css'
-import {IconButton} from "@mui/material";
+import { cx, css } from '@emotion/css'
 
 interface BaseProps {
   className: string
@@ -9,36 +8,40 @@ interface BaseProps {
 }
 type OrNull<T> = T | null
 
-
 export const Button = React.forwardRef(
-    (
-        {
-            className,
-            active,
-            reversed,
-            ...props
-        }: PropsWithChildren<{
-            active: boolean
-            reversed: boolean
-        } & BaseProps>,
-        ref: Ref<OrNull<HTMLSpanElement>>
-    ) => (
-        // @ts-ignore
-        <IconButton
-            {...props}
-            // @ts-ignore
-            ref={ref}
-            style={reversed && active ? {
-                borderRadius: "4px",
-                background: '#fff',
-                backgroundColor: 'rgba(0,0,0, 0.2)',
-                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-            } : {
-                borderRadius: "4px",
-            }}
-        />
-    )
-);
+  (
+    {
+      className,
+      active,
+      reversed,
+      ...props
+    }: PropsWithChildren<
+      {
+        active: boolean
+        reversed: boolean
+      } & BaseProps
+    >,
+    ref: any//Ref<OrNull<HTMLSpanElement>>
+  ) => (
+    <span
+      {...props}
+      ref={ref}
+      className={cx(
+        className,
+        css`
+          cursor: pointer;
+          color: ${reversed
+            ? active
+              ? 'white'
+              : '#aaa'
+            : active
+            ? 'black'
+            : '#ccc'};
+        `
+      )}
+    />
+  )
+)
 
 export const EditorValue = React.forwardRef(
   (
@@ -51,16 +54,14 @@ export const EditorValue = React.forwardRef(
         value: any
       } & BaseProps
     >,
-    ref: Ref<OrNull<null>>
+    ref: any//Ref<OrNull<null>>
   ) => {
     const textLines = value.document.nodes
       .map((node:any) => node.text)
       .toArray()
       .join('\n')
-
-      return (
+    return (
       <div
-          // @ts-ignore
         ref={ref}
         {...props}
         className={cx(
@@ -102,11 +103,10 @@ export const EditorValue = React.forwardRef(
 export const Icon = React.forwardRef(
   (
     { className, ...props }: PropsWithChildren<BaseProps>,
-    ref: Ref<OrNull<HTMLSpanElement>>
+    ref: any//Ref<OrNull<HTMLSpanElement>>
   ) => (
     <span
       {...props}
-        // @ts-ignore
       ref={ref}
       className={cx(
         'material-icons',
@@ -123,11 +123,10 @@ export const Icon = React.forwardRef(
 export const Instruction = React.forwardRef(
   (
     { className, ...props }: PropsWithChildren<BaseProps>,
-    ref: Ref<OrNull<HTMLDivElement>>
+    ref: any//Ref<OrNull<HTMLDivElement>>
   ) => (
     <div
       {...props}
-        // @ts-ignore
       ref={ref}
       className={cx(
         className,
@@ -146,11 +145,10 @@ export const Instruction = React.forwardRef(
 export const Menu = React.forwardRef(
   (
     { className, ...props }: PropsWithChildren<BaseProps>,
-    ref: Ref<OrNull<HTMLDivElement>>
+    ref: any//Ref<OrNull<HTMLDivElement>>
   ) => (
     <div
       {...props}
-        // @ts-ignore
       ref={ref}
       className={cx(
         className,
@@ -180,7 +178,6 @@ export const Toolbar = React.forwardRef(
   ) => (
     <Menu
       {...props}
-        // @ts-ignore
       ref={ref}
       className={cx(
         className,

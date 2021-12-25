@@ -1,8 +1,7 @@
 import React from 'react'
-import {Route, Switch} from "react-router-dom";
+import {Route} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import RecipeReviewCard from "../UI/card";
-import Starred from "./Starred";
 
 function Inbox() {
   // let { username }: any = useParams()

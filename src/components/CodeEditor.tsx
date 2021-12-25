@@ -20,7 +20,6 @@ function CodeEditor({ onChange, language, children }:any) {
           mode: language,
           theme: 'material',
           lineWrapping: true,
-          lint: true,
           lineNumbers: true,
         }}
         onBeforeChange={changeValueHandler}
