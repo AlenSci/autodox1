@@ -2,35 +2,11 @@ import React, {useEffect, useRef} from 'react'
 import {ReactEditor, useSlate} from 'slate-react'
 import {Editor, Range, Text, Transforms,} from 'slate'
 import {css} from '@emotion/css'
-
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 import {Button, Icon, Menu, Portal} from '../components'
 import {CustomEditor} from '../custom-types'
-
-// const HoveringMenuExample = () => {
-//     const [value, setValue] = useState<Descendant[]>(initialValue)
-//     const editor = useMemo(() => withHistory(withReact(createEditor())), [])
-//
-//     return (
-//         <Slate editor={editor} value={value} onChange={value => setValue(value)}>
-//             <HoveringToolbar/>
-//             <Editable
-//                 renderLeaf={props => <Leaf {...props} />}
-//                 placeholder="Enter some text..."
-//                 onDOMBeforeInput={(event: InputEvent) => {
-//                     event.preventDefault()
-//                     switch (event.inputType) {
-//                         case 'formatBold':
-//                             return toggleFormat(editor, 'bold')
-//                         case 'formatItalic':
-//                             return toggleFormat(editor, 'italic')
-//                         case 'formatUnderline':
-//                             return toggleFormat(editor, 'underlined')
-//                     }
-//                 }}
-//             />
-//         </Slate>
-//     )
-// }
 
 const toggleFormat = (editor: CustomEditor, format: string) => {
   const isActive = isFormatActive(editor, format)
@@ -120,9 +96,9 @@ export const HoveringToolbar = () => {
           transition: opacity 0.75s;
         `}
       >
-        <FormatButton format="bold" icon="format_bold" />
-        <FormatButton format="italic" icon="format_italic" />
-        <FormatButton format="underlined" icon="format_underlined" />
+        <FormatButton format="bold" icon={<FormatBoldIcon/>}/>
+        <FormatButton format="italic" icon={<FormatItalicIcon/>} />
+        <FormatButton format="underlined" icon={<FormatUnderlinedIcon/>} />
       </Menu>
     </Portal>
   )
@@ -145,28 +121,3 @@ const FormatButton = ({ format, icon }) => {
   )
 }
 
-// const initialValue: Descendant[] = [
-//   {
-//     type: 'paragraph',
-//     children: [
-//       {
-//         text:
-//           'This example shows how you can make a hovering menu appear above your content, which you can use to make text ',
-//       },
-//       { text: 'bold', bold: true },
-//       { text: ', ' },
-//       { text: 'italic', italic: true },
-//       { text: ', or anything else you might want to do!' },
-//     ],
-//   },
-//   {
-//     type: 'paragraph',
-//     children: [
-//       { text: 'Try it out yourself! Just ' },
-//       { text: 'select any piece of text and the menu will appear', bold: true },
-//       { text: '.' },
-//     ],
-//   },
-// ]
-
-// export default HoveringMenuExample

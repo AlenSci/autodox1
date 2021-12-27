@@ -1,183 +1,151 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, {useCallback, useMemo, useState} from 'react'
 import isHotkey from 'is-hotkey'
-import { Editable, withReact, useSlate, Slate } from 'slate-react'
-import {
-  Editor,
-  Transforms,
-  createEditor,
-  Descendant,
-  Element as SlateElement,
-} from 'slate'
-import { withHistory } from 'slate-history'
-
-import { Button, Icon, Toolbar } from './components'
-import { CustomEditor } from './custom-types'
-import { HoveringToolbar } from './components/hovering-toolbar'
+import {Editable, Slate, withReact} from 'slate-react'
+import {createEditor, Descendant, Editor, Transforms,} from 'slate'
+import {withHistory} from 'slate-history'
+import {CustomEditor, EditableVoidElement} from './custom-types'
+import {HoveringToolbar} from './components/hovering-toolbar'
+import useMention from "./mention_plugin/use_mentions";
+import {CHARACTERS, insertMention, Mention, withMentions} from "./mention_plugin/mentoin_element";
+import {components_elements} from "./make_element_plugin/elements";
 
 const HOTKEYS = {
-  'mod+b': 'bold',
-  'mod+i': 'italic',
-  'mod+u': 'underline',
-  'mod+`': 'code',
+    'mod+b': 'bold',
+    'mod+i': 'italic',
+    'mod+u': 'underline',
+    'mod+`': 'code',
 }
 
 const LIST_TYPES = ['numbered-list', 'bulleted-list']
 
-const RichText = (props:any) => {
-  const [value, setValue] = useState<Descendant[]>(props.initialValue)
-  const renderElement = useCallback(props => <Element {...props} />, [])
-  const renderLeaf = useCallback(props => <Leaf {...props} />, [])
-  const editor = useMemo(() => withHistory(withReact(createEditor())), [])
+const RichText = (props: any) => {
 
-  return (
-      <Slate editor={editor} value={value} onChange={value => setValue(value)}>
-        <HoveringToolbar />
-        <Editable
-            renderElement={renderElement}
-            renderLeaf={renderLeaf}
-            placeholder="Enter some rich text…"
-            spellCheck
-            autoFocus
-            onKeyDown={event => {
-              for (const hotkey in HOTKEYS) {
-                if (isHotkey(hotkey, event as any)) {
-                  event.preventDefault()
-                  // @ts-ignore
-                  const mark = HOTKEYS[hotkey]
-                  toggleMark(editor, mark)
-                }
-              }
-            }}
-        />
-      </Slate>
-  )
+    const [value, setValue] = useState<Descendant[]>(props.initialValue)
+    const renderElement = useCallback(props => <Element {...props} />, [])
+    const renderLeaf = useCallback(props => <Leaf {...props} />, [])
+    const withs: any = [
+        withReact,
+        withHistory,
+        withMentions
+    ];
+
+    var WITHS: any = createEditor()
+    withs.map((i: any) => {
+        WITHS = i(WITHS)
+    });
+    const editor = useMemo(() => WITHS, []);
+
+    const [onChange, onKeyDown, Menu]: any = useMention(editor, /^@(\w+)$/, CHARACTERS, insertMention)
+    const insertElement = (editor: any, character: string) => {
+        // [components_elements].map((i: any) => {
+        //     if (character in i && 'insert' in i[character]) {
+        //         fragment = i[character].insert(character)
+        //     } else {
+        //         fragment = i.other.insert(character)
+        //     }
+        // })
+        props.path[0]+=1
+        const voidNode: EditableVoidElement = {
+                                    type: 'editable-void',
+                                    children: [{text: character}],
+                                }
+        Transforms.insertNodes(props.main_ditor, voidNode, {at: props.path})
+    };
+
+    const [onChange_E, onKeyDown_E, Menu_E]: any = useMention(editor, /^\/(\w+)$/, Object.keys(components_elements), insertElement)
+    return (
+        <Slate
+            editor={editor} value={value} onChange={value => {
+            onChange()
+            onChange_E()
+            setValue(value)
+        }}>
+            <HoveringToolbar/>
+            <Menu_E/>
+            <Menu/>
+            <Editable
+                renderElement={renderElement}
+                renderLeaf={renderLeaf}
+                placeholder="Enter some rich text…"
+                spellCheck
+                autoFocus
+                onKeyDown={event => {
+                    onKeyDown(event)
+                    onKeyDown_E(event)
+
+                    for (const hotkey in HOTKEYS) {
+                        if (isHotkey(hotkey, event as any)) {
+                            event.preventDefault()
+                            // @ts-ignore
+                            const mark = HOTKEYS[hotkey]
+                            toggleMark(editor, mark)
+                        }
+                    }
+                }}
+            />
+        </Slate>
+    )
 }
 
-const toggleBlock = (editor: any, format: any) => {
-  const isActive = isBlockActive(editor, format)
-  const isList = LIST_TYPES.includes(format)
-
-  Transforms.unwrapNodes(editor, {
-    match: n =>
-        !Editor.isEditor(n) &&
-        SlateElement.isElement(n) &&
-        LIST_TYPES.includes(n.type),
-    split: true,
-  })
-  const newProperties: Partial<SlateElement> = {
-    type: isActive ? 'paragraph' : isList ? 'list-item' : format,
-  }
-  Transforms.setNodes<SlateElement>(editor, newProperties)
-
-  if (!isActive && isList) {
-    const block = {type: format, children: []}
-    Transforms.wrapNodes(editor, block)
-  }
-}
 
 const toggleMark = (editor: CustomEditor, format: string) => {
-  const isActive = isMarkActive(editor, format)
+    const isActive = isMarkActive(editor, format)
 
-  if (isActive) {
-    Editor.removeMark(editor, format)
-  } else {
-    Editor.addMark(editor, format, true)
-  }
+    if (isActive) {
+        Editor.removeMark(editor, format)
+    } else {
+        Editor.addMark(editor, format, true)
+    }
 }
 
-const isBlockActive = (editor: CustomEditor, format: string) => {
-  const { selection } = editor
-  if (!selection) return false
-
-  const [match] = Array.from(
-    Editor.nodes(editor, {
-      at: Editor.unhangRange(editor, selection),
-      match: n =>
-        !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === format,
-    })
-  )
-
-  return !!match
-}
 
 const isMarkActive = (editor: CustomEditor, format: string) => {
-  const marks = Editor.marks(editor)
-  // @ts-ignore
-  return marks ? marks[format] === true : false
+    const marks = Editor.marks(editor)
+    // @ts-ignore
+    return marks ? marks[format] === true : false
 }
 
 // @ts-ignore
-const Element = ({ attributes, children, element }) => {
-  switch (element.type) {
-    case 'block-quote':
-      return <blockquote {...attributes}>{children}</blockquote>
-    case 'bulleted-list':
-      return <ul {...attributes}>{children}</ul>
-    case 'heading-one':
-      return <h1 {...attributes}>{children}</h1>
-    case 'heading-two':
-      return <h2 {...attributes}>{children}</h2>
-    case 'list-item':
-      return <li {...attributes}>{children}</li>
-    case 'numbered-list':
-      return <ol {...attributes}>{children}</ol>
-    default:
-      return <p {...attributes}>{children}</p>
-  }
+const Element = (props: any) => {
+
+    const {attributes, children, element} = props
+    var elements = {
+        'mention': <Mention {...props} />,
+        'block-quote': <blockquote {...attributes}>{children}</blockquote>,
+        'bulleted-list': <ul {...attributes}>{children}</ul>,
+        'heading-one': <h1 {...attributes}>{children}</h1>,
+        'list-item': <li {...attributes}>{children}</li>,
+        'numbered-list': <ol {...attributes}>{children}</ol>,
+    }
+    for (var key in components_elements) {
+        if (components_elements.hasOwnProperty(key)) {
+            // @ts-ignore
+            elements[key] = components_elements[key]['element']
+        }
+    }
+    // @ts-ignore
+    return elements[element.type] || <p {...attributes}>{children}</p>
 }
 
 // @ts-ignore
-const Leaf = ({ attributes, children, leaf }) => {
-  if (leaf.bold) {
-    children = <strong>{children}</strong>
-  }
+const Leaf = ({attributes, children, leaf}) => {
+    if (leaf.bold) {
+        children = <strong>{children}</strong>
+    }
 
-  if (leaf.code) {
-    children = <code>{children}</code>
-  }
+    if (leaf.code) {
+        children = <code>{children}</code>
+    }
 
-  if (leaf.italic) {
-    children = <em>{children}</em>
-  }
+    if (leaf.italic) {
+        children = <em>{children}</em>
+    }
 
-  if (leaf.underline) {
-    children = <u>{children}</u>
-  }
+    if (leaf.underline) {
+        children = <u>{children}</u>
+    }
 
-  return <span {...attributes}>{children}</span>
-}
-
-// @ts-ignore
-const BlockButton = ({ format, icon }) => {
-  const editor = useSlate()
-  return (
-    <Button
-      active={isBlockActive(editor, format)}
-      onMouseDown={(event: { preventDefault: () => void }) => {
-        event.preventDefault()
-        toggleBlock(editor, format)
-      }}
-    >
-      <Icon>{icon}</Icon>
-    </Button>
-  )
-}
-
-// @ts-ignore
-const MarkButton = ({ format, icon }) => {
-  const editor = useSlate()
-
-  return (
-    <Button
-      active={isMarkActive(editor, format)}
-      onMouseDown={(event: { preventDefault: () => void }) => {
-        event.preventDefault()
-        toggleMark(editor, format)
-      }}
-    >
-      <Icon>{icon}</Icon>
-    </Button>
-  )
+    return <span {...attributes}>{children}</span>
 }
 
 
