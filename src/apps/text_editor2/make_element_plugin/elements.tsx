@@ -1,33 +1,28 @@
 import {Element as SlateElement, Transforms} from "slate";
 import React from "react";
-import {Divider, Paper, Table, TableBody, Typography} from "@mui/material";
+import {Divider, Typography} from "@mui/material";
 import {ReactEditor, useReadOnly, useSlateStatic} from "slate-react";
 import {css} from "@emotion/css";
-// import {ImageElement} from "../Functions/paste-html";
 import uniqid from "uniqid";
-// import {Refer} from "../components/refer";
-// import TableCellComponent from "../components/table_cell";
-// import TableRowComponent from "../components/table_row";
-// import Code from "../components/Code";
 
 export const components_elements: any = {
     'tableHeader': {
-        'element': (props: any) =>{
-            const { attributes, children, element } = props
-            return(<div {...attributes} contentEditable={false}>
+        'element': (props: any) => {
+            const {attributes, children, element} = props
+            return (<div {...attributes} contentEditable={false}>
                 <span style={{display: "inline"}}>
           <input
               placeholder="Title."
               value={props.title && ''}
-              onChange={(event:any)=>{
+              onChange={(event: any) => {
                   // Transforms.transform()
                   // props.title = event.target.value
               }}
               type="text"/>
           <span>Filter</span>
         </span>
-      {children}
-    </div>)
+                {children}
+            </div>)
         },
         'insert': (character: any) => ([
             {
@@ -37,44 +32,44 @@ export const components_elements: any = {
             }]),
     },
     'EditableVoid': {
-        'element': (props: any) =>{
-            const { attributes, children, element } = props
+        'element': (props: any) => {
+            const {attributes, children, element} = props
 
-            return(<div {...attributes} contentEditable={false}>
-      <div
-        className={css`
+            return (<div {...attributes} contentEditable={false}>
+                <div
+                    className={css`
           box-shadow: 0 0 0 3px #ddd;
           padding: 8px;
         `}
-      >
-        <h4>Name:</h4>
-          <input type="text"/>
-        <h4>Left or right handed:</h4>
-        <input
-          type="radio"
-          name="handedness"
-          value="left"
-        />{' '}
-        Left
-        <br />
-        <input
-          type="radio"
-          name="handedness"
-          value="right"
-        />{' '}
-        Right
-        <h4>Tell us about yourself:</h4>
-        <div
-          className={css`
+                >
+                    <h4>Name:</h4>
+                    <input type="text"/>
+                    <h4>Left or right handed:</h4>
+                    <input
+                        type="radio"
+                        name="handedness"
+                        value="left"
+                    />{' '}
+                    Left
+                    <br/>
+                    <input
+                        type="radio"
+                        name="handedness"
+                        value="right"
+                    />{' '}
+                    Right
+                    <h4>Tell us about yourself:</h4>
+                    <div
+                        className={css`
             padding: 20px;
             border: 2px solid #ddd;
           `}
-        >
-            xxx
-        </div>
-      </div>
-      {children}
-    </div>)
+                    >
+                        xxx
+                    </div>
+                </div>
+                {children}
+            </div>)
         },
         'insert': (character: any) => ([
             {
@@ -93,18 +88,7 @@ export const components_elements: any = {
     //             children: [{text: ''}],
     //         }]),
     // },
-    'divider': {
-        'element': (props: any) => <Divider {...props} />,
-        'insert': (character: any) => ([{
-            type: character,
-            id: uniqid(),
-            children: [{text: ''}],
-        }, {
-            type: 'paragraph',
-            id: uniqid(),
-            children: [{text: ''}],
-        }]),
-    },
+
     'quote': {
         'element': (props: any) => <Typography style={{borderLeft: 'black solid 3px', paddingLeft: '10px'}} variant="h6"
                                                gutterBottom
@@ -147,102 +131,102 @@ export const components_elements: any = {
     // 'image': {
     //     'element': (props: any) => <ImageElement {...props} />,
     // },
-    'table': {
-        'element': (props: any) => <Table>
-            <TableBody style={{border: '1px solid black'}} {...props.attributes}>{props.children}</TableBody>
-        </Table>,
-        'insert': (character: any) => {
-            const id = uniqid()
-            return {
-            type: 'table',
-            id: id,
-            children: [
-                {type: 'tableHeader',
-                id:id+'-t',
-                children: [{text: ''}]
-                },
-                {
-                    type: 'table-row',
-                    id:id+'-0',
-                    children: [
-                        {
-                            type: 'table-cell',
-                            id:id+'-00',
-                            children: [{text: ''}],
-                        },
-                        {
-                            id:id+'-01',
-                            type: 'table-cell',
-                            children: [{text: 'Human', bold: true}],
-                        },
-                        {
-                            id:id+'-02',
-                            type: 'table-cell',
-                            children: [{text: 'Dog', bold: true}],
-                        },
-                        {
-                            id:id+'-03',
-                            type: 'table-cell',
-                            children: [{text: 'Cat', bold: true}],
-                        },
-                    ],
-                },
-                {
-                    type: 'table-row',
-                    id:id+'-1',
-                    children: [
-                        {
-                            id:id+'-10',
-                            type: 'table-cell',
-                            children: [{text: '# of Feet', bold: true}],
-                        },
-                        {
-                            id:id+'-11',
-                            type: 'table-cell',
-                            children: [{text: '2'}],
-                        },
-                        {
-                            id:id+'-12',
-                            type: 'table-cell',
-                            children: [{text: '4'}],
-                        },
-                        {
-                            id:id+'-13',
-                            type: 'table-cell',
-                            children: [{text: '4'}],
-                        },
-                    ],
-                },
-                {
-                    id:id+'-2',
-                    type: 'table-row',
-                    children: [
-                        {
-                            id:id+'-20',
-                            type: 'table-cell',
-                            children: [{text: '# of Lives', bold: true}],
-                        },
-                        {
-                            id:id+'-21',
-                            type: 'table-cell',
-                            children: [{text: '1'}],
-                        },
-                        {
-                            id:id+'-22',
-                            type: 'table-cell',
-                            children: [{text: '1'}],
-                        },
-                        {
-                            id:id+'-23',
-                            type: 'table-cell',
-                            children: [{text: '9'}],
-                        },
-                    ],
-                },
-            ],
-        }
-        },
-    },
+    // 'table': {
+    //     'element': (props: any) => <Table>
+    //         <TableBody style={{border: '1px solid black'}} {...props.attributes}>{props.children}</TableBody>
+    //     </Table>,
+    //     'insert': (character: any) => {
+    //         const id = uniqid()
+    //         return {
+    //         type: 'table',
+    //         id: id,
+    //         children: [
+    //             {type: 'tableHeader',
+    //             id:id+'-t',
+    //             children: [{text: ''}]
+    //             },
+    //             {
+    //                 type: 'table-row',
+    //                 id:id+'-0',
+    //                 children: [
+    //                     {
+    //                         type: 'table-cell',
+    //                         id:id+'-00',
+    //                         children: [{text: ''}],
+    //                     },
+    //                     {
+    //                         id:id+'-01',
+    //                         type: 'table-cell',
+    //                         children: [{text: 'Human', bold: true}],
+    //                     },
+    //                     {
+    //                         id:id+'-02',
+    //                         type: 'table-cell',
+    //                         children: [{text: 'Dog', bold: true}],
+    //                     },
+    //                     {
+    //                         id:id+'-03',
+    //                         type: 'table-cell',
+    //                         children: [{text: 'Cat', bold: true}],
+    //                     },
+    //                 ],
+    //             },
+    //             {
+    //                 type: 'table-row',
+    //                 id:id+'-1',
+    //                 children: [
+    //                     {
+    //                         id:id+'-10',
+    //                         type: 'table-cell',
+    //                         children: [{text: '# of Feet', bold: true}],
+    //                     },
+    //                     {
+    //                         id:id+'-11',
+    //                         type: 'table-cell',
+    //                         children: [{text: '2'}],
+    //                     },
+    //                     {
+    //                         id:id+'-12',
+    //                         type: 'table-cell',
+    //                         children: [{text: '4'}],
+    //                     },
+    //                     {
+    //                         id:id+'-13',
+    //                         type: 'table-cell',
+    //                         children: [{text: '4'}],
+    //                     },
+    //                 ],
+    //             },
+    //             {
+    //                 id:id+'-2',
+    //                 type: 'table-row',
+    //                 children: [
+    //                     {
+    //                         id:id+'-20',
+    //                         type: 'table-cell',
+    //                         children: [{text: '# of Lives', bold: true}],
+    //                     },
+    //                     {
+    //                         id:id+'-21',
+    //                         type: 'table-cell',
+    //                         children: [{text: '1'}],
+    //                     },
+    //                     {
+    //                         id:id+'-22',
+    //                         type: 'table-cell',
+    //                         children: [{text: '1'}],
+    //                     },
+    //                     {
+    //                         id:id+'-23',
+    //                         type: 'table-cell',
+    //                         children: [{text: '9'}],
+    //                     },
+    //                 ],
+    //             },
+    //         ],
+    //     }
+    //     },
+    // },
     // 'table-row': {
     //     'element': (props: any) => TableRowComponent(props),
     // },
@@ -265,17 +249,69 @@ export const components_elements: any = {
             children: [{text: ''}],
         }),
     },
+    'table': {
+        'element': (props: any) => <table contentEditable={false} {...props.attributes}>
+            <thead>
+
+            <tr>
+                <th>header1</th>
+                <th>header2</th>
+                <th>header3</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td> text1.1</td>
+                <td>text1.2</td>
+                <td>text1.3</td>
+            </tr>
+            <tr>
+                <td>text2.1</td>
+                <td>text2.2</td>
+                <td>text2.3</td>
+            </tr>
+            <tr>
+                <td>text3.1</td>
+                <td>text3.2</td>
+                <td>text3.3</td>
+            </tr>
+            <tr>
+            </tr>
+            </tbody>
+        </table>,
+        'insert': (character: any) => ([{
+            type: 'table',
+            id: uniqid(),
+            children: [{text: ''}],
+        }]),
+    },
+    'title': {
+        'element': (props: any) => <h1 style={{color:'red'}} {...props.attributes}>{props.children}</h1>,
+        'insert': (character: any) => ([{
+            type: character,
+            id: uniqid(),
+            children: [{text: ''}],
+        }]),
+    },
+    'divider': {
+        'element': (props: any) => <Divider {...props.attributes}>{props.children}</Divider>,
+        'insert': (character: any) => ([{
+            type: character,
+            id: uniqid(),
+            children: [{text: ''}],
+        }]),
+    },
 };
 
 
-const CheckListItemElement = ({ attributes, children, element }:any) => {
-  const editor = useSlateStatic()
-  const readOnly = useReadOnly()
-  const { checked } = element
-  return (
-    <div
-      {...attributes}
-      className={css`
+const CheckListItemElement = ({attributes, children, element}: any) => {
+    const editor = useSlateStatic()
+    const readOnly = useReadOnly()
+    const {checked} = element
+    return (
+        <div
+            {...attributes}
+            className={css`
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -283,29 +319,29 @@ const CheckListItemElement = ({ attributes, children, element }:any) => {
           margin-top: 0;
         }
       `}
-    >
+        >
       <span
-        contentEditable={false}
-        className={css`
+          contentEditable={false}
+          className={css`
           margin-right: 0.75em;
         `}
       >
         <input
-          type="checkbox"
-          checked={checked}
-          onChange={event => {
-            const path = ReactEditor.findPath(editor, element)
-            const newProperties: Partial<SlateElement> = {
-              checked: event.target.checked,
-            }
-            Transforms.setNodes(editor, newProperties, { at: path })
-          }}
+            type="checkbox"
+            checked={checked}
+            onChange={event => {
+                const path = ReactEditor.findPath(editor, element)
+                const newProperties: Partial<SlateElement> = {
+                    checked: event.target.checked,
+                }
+                Transforms.setNodes(editor, newProperties, {at: path})
+            }}
         />
       </span>
-      <span
-        contentEditable={!readOnly}
-        suppressContentEditableWarning
-        className={css`
+            <span
+                contentEditable={!readOnly}
+                suppressContentEditableWarning
+                className={css`
           flex: 1;
           opacity: ${checked ? 0.666 : 1};
           text-decoration: ${!checked ? 'none' : 'line-through'};
@@ -313,11 +349,11 @@ const CheckListItemElement = ({ attributes, children, element }:any) => {
             outline: none;
           }
         `}
-      >
+            >
         {children}
       </span>
-    </div>
-  )
+        </div>
+    )
 }
 
 

@@ -3,7 +3,7 @@ import isHotkey from 'is-hotkey'
 import {Editable, Slate, withReact} from 'slate-react'
 import {createEditor, Descendant, Editor, Transforms,} from 'slate'
 import {withHistory} from 'slate-history'
-import {CustomEditor, EditableVoidElement} from './custom-types'
+import {CustomEditor} from './custom-types'
 import {HoveringToolbar} from './components/hovering-toolbar'
 import useMention from "./mention_plugin/use_mentions";
 import {CHARACTERS, insertMention, Mention, withMentions} from "./mention_plugin/mentoin_element";
@@ -37,18 +37,13 @@ const RichText = (props: any) => {
 
     const [onChange, onKeyDown, Menu]: any = useMention(editor, /^@(\w+)$/, CHARACTERS, insertMention)
     const insertElement = (editor: any, character: string) => {
-        // [components_elements].map((i: any) => {
-        //     if (character in i && 'insert' in i[character]) {
-        //         fragment = i[character].insert(character)
-        //     } else {
-        //         fragment = i.other.insert(character)
-        //     }
-        // })
-        props.path[0]+=1
-        const voidNode: EditableVoidElement = {
-                                    type: 'editable-void',
-                                    children: [{text: character}],
-                                }
+        props.path[0] += 1
+
+        var voidNode: any = {
+            type: 'editable-void',
+            children: components_elements[character]['insert'](character),
+        }
+
         Transforms.insertNodes(props.main_ditor, voidNode, {at: props.path})
     };
 
@@ -72,7 +67,24 @@ const RichText = (props: any) => {
                 onKeyDown={event => {
                     onKeyDown(event)
                     onKeyDown_E(event)
+                    var voidNode: any = [{
+                        id: '222',
+                        type: 'editable-void',
+                        children: [
+                            {
+                                type: 'paragraph',
+                                children: [
+                                    {text: ''},
+                                ],
+                            },
+                        ],
+                    }]
 
+                    if (event.key === 'Enter' ) {
+                        event.preventDefault()
+                        props.path[0] += 1
+                        Transforms.insertNodes(props.main_ditor, voidNode, {at: props.path})
+                    }
                     for (const hotkey in HOTKEYS) {
                         if (isHotkey(hotkey, event as any)) {
                             event.preventDefault()
@@ -117,12 +129,10 @@ const Element = (props: any) => {
         'list-item': <li {...attributes}>{children}</li>,
         'numbered-list': <ol {...attributes}>{children}</ol>,
     }
-    for (var key in components_elements) {
-        if (components_elements.hasOwnProperty(key)) {
-            // @ts-ignore
-            elements[key] = components_elements[key]['element']
-        }
-    }
+    var fragment = components_elements[element.type]
+
+    // @ts-ignore
+    elements[element.type] = fragment && fragment['element'](props)
     // @ts-ignore
     return elements[element.type] || <p {...attributes}>{children}</p>
 }

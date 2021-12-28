@@ -107,9 +107,10 @@ const Element = (props: any) => {
         case 'editable-void':
             return <EditableVoid {...props} />
         case 'title':
-            return <h2 {...attributes}>{children}</h2>
+            return <h2 style={{color:'blue'}} {...attributes}>{children}</h2>
         case 'paragraph':
             return <p {...attributes}>{children}</p>
+
     }
 }
 
@@ -121,6 +122,18 @@ const initialValue: any[] = [
     },
     {
         id: '222',
+        type: 'editable-void',
+        children: [
+            {
+                type: 'paragraph',
+                children: [
+                    {text: 'This is editable text'},
+                ],
+            },
+        ],
+    },
+    {
+        id: '333',
         type: 'editable-void',
         children: [
             {
