@@ -4,11 +4,12 @@ import SendEmail from "./api";
 import Profile from './profile'
 import Draft from "./Draf";
 import TextEditor2 from "./TextEditor2";
-
+import TextEditor3 from './TextEditor3';
+// import * as All from './'
 function Pages() {
-    // console.log(AllPages.Inbox)
     return (
       <div>
+          <TextEditor3/>
           <TextEditor2/>
           <Inbox/>
           <SendEmail/>

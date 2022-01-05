@@ -95,8 +95,8 @@ export default function PersistentDrawerLeft(props: any) {
             </div> : <ControlPanel
                 menu={[{e: <Link to={'/profile'}><p>Profile</p></Link>}, {e: 'My account'}, {
                     action: () => {
-                        window.localStorage.clear();
-                        window.location.reload();
+                        // window.localStorage.clear();
+                        // window.location.reload();
                     },
                     style: {color: 'tomato'},
                     e: <div style={{display: 'flex'}}><LogoutIcon/>Sign out</div>

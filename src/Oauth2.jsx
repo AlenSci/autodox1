@@ -24,7 +24,7 @@ export default function OAuth2() {
         localStorage.setItem('token', data.google_auth)
         window.location.reload();
     } else {
-        window.localStorage.clear()
+        // window.localStorage.clear()
     }
 
 
