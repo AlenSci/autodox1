@@ -3,6 +3,8 @@ import React, {useState} from "react";
 import {Transforms} from "slate";
 import CheckListItemElement from "./Components/check_listItem";
 import getNode from "./Functions/get_node_by_html";
+import CodeEditor from "../../components/CodeEditor";
+import CodeBlock from "./Components/code_block";
 
 
 const Element = (props: JSX.IntrinsicAttributes & { attributes: any; children: any; element: any }) => {
@@ -15,6 +17,7 @@ const Element = (props: JSX.IntrinsicAttributes & { attributes: any; children: a
 
     var elements: any = {
         "check-list-item": <CheckListItemElement {...props} />,
+        'code': <CodeBlock {...props}/>
     }
     const render = elements[element.type] || <p {...attributes}>{children}</p>
     return <div
@@ -23,8 +26,8 @@ const Element = (props: JSX.IntrinsicAttributes & { attributes: any; children: a
             const id = e.dataTransfer.getData("dragged")
             var dragged: any = document.getElementById(id)
             var draggedOver: any = document.getElementById(element.id)
-            const [node, path]:any = getNode(dragged.children[dragged.children.length-1], editor)
-            const [node2, path2] :any= getNode(draggedOver.children[draggedOver.children.length-1], editor)
+            const [node, path]: any = getNode(dragged.children[dragged.children.length - 1], editor)
+            const [node2, path2]: any = getNode(draggedOver.children[draggedOver.children.length - 1], editor)
 
             Transforms.moveNodes(editor, {
                 at: path,

@@ -52,4 +52,22 @@ export const initialValue: Descendant[] | any = [
         type: 'paragraph',
         children: [{text: 'Try it out for yourself!'}],
     },
+    {
+        id: '9x',
+        type: 'code',
+        value: '<h1> hello world </h1>',
+        children: [{text: ""}],
+    },
+    {
+        id: '10x',
+        type: 'code',
+        value: '<code style="color: red"> code is here </code>">',
+        children: [{text: ""}],
+    },
+    {
+        id: '11x',
+        type: 'data-grid',
+        data:[],
+        children: [{text: ""}],
+    },
 ]

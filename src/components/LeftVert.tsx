@@ -55,12 +55,18 @@ const LeftVert = (props: any) => {
         </Popover>
 
             <span
-                style={{display:'inline-block', opacity: over ? '80%' : '0', transitionDuration: '100', transition: 'opacity 0.3s'}}>
+                style={{
+                    display: 'inline-block',
+                    opacity: over ? '80%' : '0',
+                    transitionDuration: '100',
+                    transition: 'opacity 0.3s'
+                }}>
                {props.buttons.map((i: any) => <IconButton onClick={i.onClick}>
                    {i.icon}
                </IconButton>)}
                 <IconButton onClick={handleVertClick}>{props.button}</IconButton>
             </span>
+
             {props.children}
         </span>
     );
