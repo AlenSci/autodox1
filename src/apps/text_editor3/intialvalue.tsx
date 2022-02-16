@@ -12,6 +12,12 @@ export const initialValue: Descendant[] | any = [
         ],
     },
     {
+        id: '11x',
+        type: 'data-grid',
+        data:[],
+        children: [{text: ""}],
+    },
+    {
         id: '2x',
         type: 'check-list-item',
         checked: true,
@@ -64,10 +70,5 @@ export const initialValue: Descendant[] | any = [
         value: '<code style="color: red"> code is here </code>">',
         children: [{text: ""}],
     },
-    {
-        id: '11x',
-        type: 'data-grid',
-        data:[],
-        children: [{text: ""}],
-    },
+
 ]

@@ -5,7 +5,7 @@ import {css} from '@emotion/css'
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
-import {Button, Icon, Menu, Portal} from '../components'
+import {Button, Icon, Menu, Portal} from './components'
 import {CustomEditor} from '../custom-types'
 import {ClickAwayListener} from "@mui/base";
 
@@ -78,7 +78,7 @@ export const HoveringToolbar = () => {
     })
 
     const handleClickAway = () => {
-        setOpen(false);
+        setOpen(false)
     };
     return (
 

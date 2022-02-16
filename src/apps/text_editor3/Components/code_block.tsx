@@ -1,4 +1,4 @@
-import CodeEditor from "../../../components/CodeEditor";
+import CodeEditor from "./CodeEditor";
 import React, {useState} from "react";
 import {Button, ButtonGroup, Popper, Tooltip} from "@mui/material";
 import DensitySmallIcon from '@mui/icons-material/DensitySmall';

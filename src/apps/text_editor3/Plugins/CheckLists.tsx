@@ -1,4 +1,4 @@
-import {CustomEditor} from "../../text_editor2/custom-types";
+import {CustomEditor} from "../custom-types";
 import {Editor, Element as SlateElement, Point, Range, Transforms} from "slate";
 
 export const withChecklists = (editor: CustomEditor) => {

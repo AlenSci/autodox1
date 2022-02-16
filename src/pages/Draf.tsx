@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import LeftVert from "../components/LeftVert";
 import React, {useState, useEffect} from 'react'
 import useLocalStorage from "../hooks/useLocalStorage";
-import CodeEditor from '../components/CodeEditor'
+import CodeEditor from '../apps/text_editor3/Components/CodeEditor'
 
 function Draft() {
     const [html, seHtml] = useLocalStorage('html', '')

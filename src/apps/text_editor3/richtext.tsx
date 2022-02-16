@@ -4,10 +4,10 @@ import {Editable, Slate, withReact} from 'slate-react'
 import {createEditor, Descendant, Editor, Transforms,} from 'slate'
 import {withHistory} from 'slate-history'
 import {CustomEditor} from './custom-types'
-import {HoveringToolbar} from './components/hovering-toolbar'
 import useMention from "./mention_plugin/use_mentions";
 import {CHARACTERS, insertMention, Mention, withMentions} from "./mention_plugin/mentoin_element";
 import {components_elements} from "./make_element_plugin/elements";
+import {HoveringToolbar} from "./Components/hovering-toolbar";
 
 const HOTKEYS = {
     'mod+b': 'bold',

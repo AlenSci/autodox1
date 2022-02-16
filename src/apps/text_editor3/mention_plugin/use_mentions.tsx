@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {Editor, Range, Transforms} from 'slate'
 import {ReactEditor,} from 'slate-react'
-import {Portal} from "../components";
+import {Portal} from "../Components/components";
 
 
 const useMention = (editor:Editor, matching:any, CHARACTERS:any, insertMention:Function) => {

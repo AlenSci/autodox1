@@ -3,8 +3,8 @@ import React, {useState} from "react";
 import {Transforms} from "slate";
 import CheckListItemElement from "./Components/check_listItem";
 import getNode from "./Functions/get_node_by_html";
-import CodeEditor from "../../components/CodeEditor";
 import CodeBlock from "./Components/code_block";
+import RenderCellGrid from "./Components/data_grid";
 
 
 const Element = (props: JSX.IntrinsicAttributes & { attributes: any; children: any; element: any }) => {
@@ -17,7 +17,8 @@ const Element = (props: JSX.IntrinsicAttributes & { attributes: any; children: a
 
     var elements: any = {
         "check-list-item": <CheckListItemElement {...props} />,
-        'code': <CodeBlock {...props}/>
+        'code': <CodeBlock {...props}/>,
+        'data-grid': <RenderCellGrid {...props}/>
     }
     const render = elements[element.type] || <p {...attributes}>{children}</p>
     return <div
